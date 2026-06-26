@@ -1,0 +1,76 @@
+---
+title: Epictetus Blog
+blurb: Um blog com CMS headless onde os editores publicam artigos ricos e estruturados e os leitores têm uma experiência de leitura rápida e renderizada estaticamente.
+type: Frontend
+origin: Personal
+category: Frontend
+stack:
+  - Next.js
+  - TypeScript
+  - Tailwind CSS
+  - Sanity
+  - Jotai
+  - Zod
+role: "Designer e desenvolvedor único: frontend, modelagem de conteúdo e integração com CMS."
+links:
+  live: https://epictetus-blog-ten.vercel.app/
+  repo: https://github.com/luisrca-tech/Epictetus-Blog
+image: /og/epictetus-blog.png
+---
+
+## Visão geral
+
+Epictetus Blog é uma plataforma de publicação pessoal construída em torno de uma
+separação clara entre conteúdo e apresentação. Os artigos vivem em um CMS
+headless e são renderizados por um frontend rápido em Next.js gerado
+estaticamente, então escrever continua sem esforço enquanto os leitores têm
+carregamentos de página quase instantâneos. É o único projeto deste portfólio com
+código-fonte público, uma janela para a forma como eu estruturo uma base de
+código real de ponta a ponta.
+
+## Escopo
+
+Uma experiência completa de leitura e autoria: um schema de conteúdo para posts
+(título, corpo, imagem de capa, metadados), renderização de rich-text
+estruturado, um índice de artigos, páginas individuais de post e uma camada de
+dados tipada entre o CMS e a UI. O frontend é responsável pelo layout, pela
+tipografia, pelo tratamento de imagens e pelo roteamento; o CMS é dono do fluxo
+editorial.
+
+## Papel
+
+Designer e desenvolvedor único. Modelei o schema de conteúdo, conectei o CMS ao
+frontend, construí a biblioteca de componentes e os templates de página, e cuidei
+do pipeline de deploy, cada decisão do formato dos dados ao pixel foi minha.
+
+## Stack
+
+- **Next.js + TypeScript**: páginas renderizadas estaticamente com uma base de
+  código totalmente tipada.
+- **Sanity**: CMS headless dono do fluxo editorial e do conteúdo estruturado,
+  consultado em tempo de build.
+- **Portable Text**: rich-text estruturado renderizado em componentes React em
+  vez de HTML cru, mantendo os artigos consistentes e seguros.
+- **Tailwind CSS**: estilização orientada a utilitários e uma escala tipográfica
+  legível.
+- **Jotai**: estado de cliente leve e primitivo onde a interatividade é
+  necessária.
+- **Zod**: validação de schema na fronteira de dados, para que conteúdo malformado
+  apareça cedo.
+
+## Desafios
+
+O desafio central foi manter o CMS e o frontend desacoplados sem perder a
+segurança de tipos: o conteúdo escrito no Sanity precisa chegar à UI como dados
+bem tipados e validados. Mapear o Portable Text para um sistema de componentes,
+em vez de despejar HTML, fez com que cada tipo de bloco renderize de forma
+previsível e continue estilizável. Equilibrar a geração estática com o frescor
+editorial guiou a estratégia de renderização.
+
+## Resultados
+
+Um blog em produção e fácil de manter, onde publicar um novo artigo é uma ação
+puramente de conteúdo, sem mudanças de código, e as páginas continuam rápidas
+porque são renderizadas com antecedência. A base de código é pública como uma
+amostra representativa de como eu modelo dados, estruturo um sistema de
+componentes e integro um CMS headless em produção.

@@ -29,7 +29,10 @@ const featuredSlugs = [
   "render-delivery-platform",
 ] as const;
 
-const allProjects = await getCollection("projects");
+const allProjects =
+  locale === "pt"
+    ? await getCollection("projectsPt")
+    : await getCollection("projects");
 const featured = featuredSlugs
   .map((slug) => allProjects.find((p) => p.id === slug))
   .filter((p): p is (typeof allProjects)[number] => p != null);
@@ -167,14 +170,18 @@ const skillIcons = [
         >
       </h2>
       <a
-        href="/projects"
+        href={getRelativeLocaleUrl(locale, "projects")}
         class="font-mono text-sm text-muted transition-colors hover:text-accent"
       >
         {t.home.featured.viewAll} →
       </a>
     </div>
     <div class="grid gap-6 sm:grid-cols-2">
-      {featured.map((project, i) => <ProjectCard project={project} index={i} />)}
+      {
+        featured.map((project, i) => (
+          <ProjectCard project={project} index={i} locale={locale} />
+        ))
+      }
     </div>
   </section>
 

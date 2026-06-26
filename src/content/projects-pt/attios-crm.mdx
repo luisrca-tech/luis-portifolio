@@ -1,0 +1,78 @@
+---
+title: Attios CRM
+blurb: Um SaaS de CRM multi-tenant onde cada workspace opera uma operação de vendas isolada (produtos, clientes, leads, pedidos e faturas) sob o seu próprio subdomínio.
+type: System
+origin: Personal
+category: Systems
+stack:
+  - Next.js
+  - TypeScript
+  - tRPC
+  - Drizzle ORM
+  - PostgreSQL
+  - Clerk
+  - Tailwind CSS
+  - Zod
+role: "Arquiteto e desenvolvedor único: modelo de dados, roteamento multi-tenant, API type-safe e UI."
+links:
+  comingSoon: true
+image: /og/attios-crm.png
+---
+
+## Visão geral
+
+Attios é um CRM multi-tenant construído como um produto SaaS completo, não como
+uma demo. Cada cliente recebe um **workspace** isolado, endereçado pelo seu
+próprio subdomínio, que é dono dos seus produtos, clientes, leads, pedidos e
+faturas. O objetivo era uma única base de código que atende muitos negócios
+independentes sem jamais deixar os dados de um workspace vazarem para outro.
+
+## Escopo
+
+Uma superfície completa de operações de vendas: um catálogo (produtos, marcas,
+categorias, tags), um pipeline de clientes e leads, um fluxo de pedidos e um
+construtor de faturas em várias etapas que atende tanto vendedores internos
+quanto vendedores externos e calcula totais a partir de subtotal, custos
+adicionais e impostos. Workspaces e times ficam por cima, para que um negócio
+possa convidar membros e colaborar dentro do seu próprio tenant.
+
+## Papel
+
+Arquiteto e desenvolvedor único. Projetei o schema relacional, o modelo de tenant
+e o roteamento por subdomínio, a API type-safe e a UI, cada camada do banco de
+dados até a tela.
+
+## Stack
+
+- **Next.js (App Router) + TypeScript**: a estrutura da aplicação, o roteamento e
+  uma base de código totalmente tipada de ponta a ponta.
+- **tRPC**: uma API type-safe sem divergência de schema entre cliente e servidor;
+  cada router recebe o `workspaceId` ativo, então as queries já nascem escopadas
+  por tenant.
+- **Drizzle ORM + PostgreSQL**: o núcleo relacional, com cada recurso indexado
+  por `workspaceId` para isolamento por tenant.
+- **Clerk**: autenticação e gestão de sessão; o usuário autenticado resolve para
+  um workspace antes que qualquer dado seja lido.
+- **Zod + React Hook Form**: formulários validados e uma fonte única de verdade
+  para o formato de entrada entre cliente e servidor.
+- **Tailwind CSS + Radix UI**: primitivos de UI acessíveis e combináveis,
+  estilizados em um sistema consistente.
+- **TanStack Query + Jotai**: cache de estado de servidor e estado de cliente
+  leve onde a interatividade exige.
+
+## Desafios
+
+O desafio que define o projeto é a multi-tenancy: o mesmo código atende cada
+cliente, então o isolamento precisa ser estrutural, e não incidental. Os tenants
+são resolvidos a partir do host da requisição, cada tabela carrega um
+`workspaceId`, e a API filtra por ele na camada de query. O construtor de faturas
+adicionou um segundo eixo de complexidade: modelar vendedores internos versus
+externos e derivar os totais corretamente em um formulário de várias etapas sem
+perder as garantias de validação.
+
+## Resultados
+
+Uma base multi-tenant funcional e isolada: um negócio pode operar todo o seu
+catálogo, pipeline e faturamento dentro do seu próprio workspace, separado de
+todos os outros tenants. O produto está em pré-lançamento, e a URL pública chega
+aqui assim que ele entrar no ar.

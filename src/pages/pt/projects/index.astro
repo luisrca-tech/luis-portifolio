@@ -1,0 +1,11 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ProjectsIndex from "../../../components/ProjectsIndex.astro";
+import { useStrings } from "../../../i18n/ui";
+
+const t = useStrings("pt");
+---
+
+<Layout title={`${t.projects.title} — ${t.brand}`}>
+  <ProjectsIndex locale="pt" />
+</Layout>

@@ -1,0 +1,79 @@
+---
+title: DeliveryChat
+blurb: Uma plataforma de chat-as-a-service em tempo real. As empresas incorporam um widget de chat com a sua marca, movido por WebSocket, no próprio site, com cada tenant totalmente isolado no seu próprio subdomínio.
+type: System
+origin: Personal
+category: Systems
+stack:
+  - Hono
+  - WebSockets
+  - PostgreSQL
+  - Drizzle ORM
+  - Better Auth
+  - Stripe
+  - React
+  - Turborepo
+role: "Arquiteto e desenvolvedor único: API, motor de tempo real, SDK incorporável, dashboard e cobrança."
+links:
+  live: https://www.deliverychat.online/
+image: /og/deliverychat.png
+---
+
+## Visão geral
+
+DeliveryChat é chat-as-a-service: um negócio adiciona um pequeno script ao seu
+site e ganha um widget de chat em tempo real com a sua marca, apoiado por um
+dashboard de suporte completo. É um SaaS multi-tenant, onde cada cliente é um
+tenant isolado no seu próprio subdomínio, com a sua própria marca, time e
+histórico de conversas, feito para ser vendido, com autenticação, cobrança e
+isolamento de dados por tenant já implementados.
+
+## Escopo
+
+Três superfícies de produto sobre um único backend: o **widget incorporável** por
+onde os visitantes conversam, o **dashboard administrativo** onde o time de uma
+empresa responde e gerencia conversas, configurações e chaves de API, e a **API**
+que carrega as mensagens em tempo real e impõe as fronteiras de tenant. Em torno
+delas ficam um site de marketing/cadastro e um SDK em JavaScript publicado que os
+sites hospedeiros podem instalar para montar o widget.
+
+## Papel
+
+Arquiteto e desenvolvedor único em todo o monorepo: a API e o modelo de dados, o
+transporte em tempo real, o SDK incorporável, o dashboard e o fluxo de cobrança e
+trial com Stripe.
+
+## Stack
+
+- **Hono + WebSockets**: uma API leve que faz upgrade para WebSocket para entrega
+  em tempo real; os visitantes trocam um token assinado antes do upgrade, então
+  uma conexão nunca pode cruzar fronteiras de tenant.
+- **PostgreSQL + Drizzle ORM**: a camada de dados tipada, com cada registro
+  escopado ao seu tenant (`applicationId`) para isolamento.
+- **Better Auth**: autenticação e sessões para os usuários do dashboard.
+- **Stripe**: cobrança por assinatura e gestão de trial orientadas por webhooks.
+- **React + TanStack Router/Query**: o dashboard administrativo e a UI do widget.
+- **SDK incorporável**: um pacote publicado com um motor de conexão customizado
+  que gerencia o ciclo de vida do WebSocket: reconexão com backoff exponencial,
+  keepalive por heartbeat e roteamento de mensagens tipado.
+- **Turborepo + Bun**: um monorepo orquestrando a API, o dashboard, o widget, o
+  site de marketing, o SDK e os pacotes compartilhados de tipos e UI.
+
+## Desafios
+
+A parte difícil é a entrega em tempo real que se mantém correta sob
+multi-tenancy. O motor de conexão precisa sobreviver a redes instáveis,
+reconectando de forma limpa, mantendo as conexões vivas com ping/pong e nunca
+entregando uma mensagem ao tenant errado. Um handshake com token assinado protege
+cada upgrade de WebSocket, e o rate limiting protege a camada de socket. O widget
+é entregue em duas formas, um build para frameworks e um bundle standalone
+injetado por um script de uma linha, então ele se incorpora em qualquer lugar sem
+uma etapa de build no site hospedeiro.
+
+## Resultados
+
+Uma plataforma em formato de produção: um negócio pode se cadastrar, incorporar o
+widget e operar suporte em tempo real a partir de um dashboard isolado, com
+cobrança e trials tratados de ponta a ponta. É o exemplo mais claro deste
+portfólio de assumir um SaaS completo (transporte em tempo real, dados
+multi-tenant, um SDK incorporável e pagamentos) como um único engenheiro.

@@ -9,12 +9,11 @@ interface Props {
 const { locale = "en" } = Astro.props;
 const t = useStrings(locale);
 
-// Home and contact follow the active locale. Projects pages are not localized
-// yet, so that link stays on the English route until they are translated.
+// Home, projects, and contact all follow the active locale.
 const home = getRelativeLocaleUrl(locale, "");
 const links = [
   { href: home, label: t.nav.home },
-  { href: "/projects", label: t.nav.projects },
+  { href: getRelativeLocaleUrl(locale, "projects"), label: t.nav.projects },
   { href: `${home}#contact`, label: t.nav.contact },
 ];
 ---

@@ -1,0 +1,83 @@
+---
+title: Dashboard de Operações da Agência
+blurb: Um dashboard interno de operações e finanças para uma agência de serviços, com controle de horas, finanças de projetos e cobrança de pagamentos por trás de uma fronteira de privacidade rígida, construído contract-first com um cliente de API gerado.
+type: System
+origin: Company
+category: Systems
+stack:
+  - Hono
+  - TypeScript
+  - PostgreSQL
+  - Drizzle ORM
+  - Better Auth
+  - OpenAPI
+  - Stripe
+  - Next.js
+  - Tailwind CSS
+role: "Engenheiro full-stack: API, modelo de dados, controle de acesso por papel e UI do dashboard."
+image: /og/agency-operations-dashboard.png
+---
+
+## Visão geral
+
+Este é o dashboard interno em que uma agência de serviços opera o seu dia a dia:
+quem registrou quais horas, quanto vale cada projeto e o que está em aberto. A
+restrição central molda tudo, já que a maioria da equipe nunca pode ver valores
+financeiros. Por isso o sistema é construído em torno de uma fronteira de
+privacidade rígida entre dados operacionais e financeiros, imposta na API e não
+escondida na UI.
+
+## Escopo
+
+Uma ferramenta de back-office que cobre o controle de horas por projeto, um
+catálogo de projetos com ciclo de vida de status, gestão de usuários por papel e
+uma trilha de auditoria imutável de cada mudança. Sobre isso ficam relatórios
+financeiros e um fluxo de solicitação de pagamento que emite links de pagamento
+com a marca e recebe por um checkout hospedado. O produto é projetado e entregue
+em fatias verticais, cada uma adicionando uma superfície operacional funcional.
+
+## Papel
+
+Engenheiro full-stack na plataforma. Atuei na API em Hono, no modelo de dados em
+Drizzle, na camada de controle de acesso por papel e no dashboard em Next.js,
+incluindo a fronteira de privacidade, o registro de auditoria e as telas de
+controle de horas.
+
+## Stack
+
+- **Hono + TypeScript**: uma API leve e modular, com routers baseados em
+  funcionalidades.
+- **PostgreSQL + Drizzle ORM**: o modelo de dados tipado (usuários e papéis,
+  projetos, registros de horas imutáveis e um log de auditoria somente de
+  inserção, com snapshots de antes/depois).
+- **Better Auth**: sessões, fluxos de senha e auditoria de eventos de
+  autenticação.
+- **OpenAPI (contract-first)**: uma especificação OpenAPI orientada por Zod como
+  fonte única de verdade, com o cliente do frontend gerado a partir dela para que
+  os tipos nunca divirjam.
+- **Stripe**: links de pagamento e checkout hospedado para receber pelos
+  projetos.
+- **Next.js + Tailwind CSS**: a UI do dashboard, com TanStack Query para estado
+  de servidor e quadros de fluxo de trabalho com arrastar e soltar.
+
+## Desafios
+
+O desafio que define o projeto é a fronteira de privacidade: certos papéis
+precisam ser incapazes de ler qualquer campo financeiro, e "incapaz" tem que
+significar estruturalmente impossível, não apenas escondido. A imposição vive em
+middleware verificado por papel e na modelagem de resposta por endpoint, não no
+frontend. Em torno disso, os registros financeiros são imutáveis: os registros de
+horas são anulados em vez de excluídos, as linhas que envolvem dinheiro usam
+chaves estrangeiras restritivas, e um log de auditoria somente de inserção
+captura cada mutação, de modo que o sistema se mantém confiável sob escrutínio.
+Manter a especificação OpenAPI contract-first e o cliente gerado em sincronia
+impôs um fluxo rígido do schema ao cliente.
+
+## Resultados
+
+Um dashboard de operações em produção onde uma agência controla horas, gerencia
+as finanças dos projetos e recebe pagamentos, com uma separação genuinamente
+imposta entre quem pode ver dados operacionais e quem pode ver dinheiro, e uma
+trilha de auditoria completa por trás de cada mudança. É um exemplo forte de
+construir controle de acesso e integridade de dados nas fundações de um sistema,
+em vez de acoplá-los depois.

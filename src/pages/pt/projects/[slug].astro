@@ -1,23 +1,23 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import ProjectDetail from "../../components/ProjectDetail.astro";
-import { useStrings } from "../../i18n/ui";
+import Layout from "../../../layouts/Layout.astro";
+import ProjectDetail from "../../../components/ProjectDetail.astro";
+import { useStrings } from "../../../i18n/ui";
 import { getCollection } from "astro:content";
 import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths = (async () => {
-  const projects = await getCollection("projects");
+  const projects = await getCollection("projectsPt");
   return projects.map((project) => ({
     params: { slug: project.id },
     props: { project },
   }));
 }) satisfies GetStaticPaths;
 
-const t = useStrings("en");
+const t = useStrings("pt");
 const { project } = Astro.props;
 const { title, blurb } = project.data;
 ---
 
 <Layout title={`${title} — ${t.brand}`} description={blurb}>
-  <ProjectDetail project={project} locale="en" />
+  <ProjectDetail project={project} locale="pt" />
 </Layout>

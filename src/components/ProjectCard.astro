@@ -5,18 +5,20 @@
 */
 import type { CollectionEntry } from "astro:content";
 import FallbackImage from "./FallbackImage.astro";
-import { useStrings } from "../i18n/ui";
+import { useStrings, type Locale } from "../i18n/ui";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 interface Props {
-  project: CollectionEntry<"projects">;
+  project: CollectionEntry<"projects"> | CollectionEntry<"projectsPt">;
   /** Position in a grid; drives the staggered scroll-reveal cascade. */
   index?: number;
+  locale?: Locale;
 }
 
-const t = useStrings("en");
-const { project, index } = Astro.props;
+const { project, index, locale = "en" } = Astro.props;
+const t = useStrings(locale);
 const { title, blurb, stack, origin, type, image, links } = project.data;
-const href = `/projects/${project.id}`;
+const href = getRelativeLocaleUrl(locale, `projects/${project.id}`);
 ---
 
 <a
@@ -35,14 +37,14 @@ const href = `/projects/${project.id}`;
 
   <div class="flex flex-1 flex-col gap-3 p-5">
     <div class="flex items-center justify-between gap-2 font-mono text-xs">
-      <span class="text-accent">{type}</span>
+      <span class="text-accent">{t.projects.badge.type[type]}</span>
       <span
         class:list={[
           "border px-2 py-0.5",
           origin === "Company"
             ? "border-border text-muted"
             : "border-accent/40 text-accent",
-        ]}>{origin}</span
+        ]}>{t.projects.badge.origin[origin]}</span
       >
     </div>
 

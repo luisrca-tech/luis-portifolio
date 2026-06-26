@@ -79,6 +79,12 @@ export interface UIStrings {
       systems: string;
       frontend: string;
     };
+    // Display labels for the frontmatter enums, which are stored in English so
+    // the filter/category logic stays locale-agnostic.
+    badge: {
+      type: Record<"System" | "Frontend", string>;
+      origin: Record<"Company" | "Personal", string>;
+    };
   };
   footer: {
     builtWith: string;
@@ -177,6 +183,10 @@ const en: UIStrings = {
       all: "all",
       systems: "systems",
       frontend: "frontend",
+    },
+    badge: {
+      type: { System: "System", Frontend: "Frontend" },
+      origin: { Company: "Company", Personal: "Personal" },
     },
   },
   footer: {
@@ -281,6 +291,10 @@ const pt: UIStrings = {
       all: "todos",
       systems: "sistemas",
       frontend: "frontend",
+    },
+    badge: {
+      type: { System: "Sistema", Frontend: "Frontend" },
+      origin: { Company: "Empresa", Personal: "Pessoal" },
     },
   },
   footer: {

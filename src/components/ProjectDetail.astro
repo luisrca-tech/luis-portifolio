@@ -1,0 +1,117 @@
+---
+/*
+  Locale-driven project detail. Takes a project entry from either locale's
+  collection plus the active locale, and renders the header, badges, links, and
+  the MDX body. The per-locale page shells own `getStaticPaths`.
+*/
+import FallbackImage from "./FallbackImage.astro";
+import { useStrings, type Locale } from "../i18n/ui";
+import { render, type CollectionEntry } from "astro:content";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+interface Props {
+  project: CollectionEntry<"projects"> | CollectionEntry<"projectsPt">;
+  locale: Locale;
+}
+
+const { project, locale } = Astro.props;
+const t = useStrings(locale);
+const { title, blurb, stack, role, origin, type, links, image } = project.data;
+const { Content } = await render(project);
+const backHref = getRelativeLocaleUrl(locale, "projects");
+---
+
+<article class="flex flex-col gap-8 py-8">
+  <a
+    href={backHref}
+    class="font-mono text-sm text-muted transition-colors hover:text-accent"
+  >
+    ← {t.projects.back}
+  </a>
+
+  <header class="flex flex-col gap-4">
+    <div class="flex items-center gap-3 font-mono text-xs">
+      <span class="text-accent">{t.projects.badge.type[type]}</span>
+      <span class="border border-border px-2 py-0.5 text-muted"
+        >{t.projects.badge.origin[origin]}</span
+      >
+    </div>
+
+    <h1 class="font-mono text-4xl font-semibold tracking-tight">
+      <span data-typewriter>{title}</span>
+    </h1>
+    <p class="prose-readable max-w-2xl text-muted" data-reveal style="--reveal-i:1">
+      {blurb}
+    </p>
+
+    <p class="font-mono text-sm text-muted" data-reveal style="--reveal-i:2">
+      <span class="text-accent">role:</span>
+      {role}
+    </p>
+
+    <ul
+      class="flex flex-wrap gap-1.5 font-mono text-xs text-muted"
+      data-reveal
+      style="--reveal-i:3"
+    >
+      {
+        stack.map((tech) => (
+          <li class="border border-border px-2 py-0.5">{tech}</li>
+        ))
+      }
+    </ul>
+
+    <div
+      class="flex flex-wrap gap-3 pt-1 font-mono text-sm"
+      data-reveal
+      style="--reveal-i:4"
+    >
+      {
+        links.live && (
+          <a
+            href={links.live}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="border border-accent px-4 py-2 text-accent transition-colors hover:bg-accent hover:text-base"
+          >
+            {t.projects.viewLive} →
+          </a>
+        )
+      }
+      {
+        links.repo && (
+          <a
+            href={links.repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="border border-border px-4 py-2 text-fg transition-colors hover:border-accent hover:text-accent"
+          >
+            {t.projects.viewCode} →
+          </a>
+        )
+      }
+      {
+        links.comingSoon && (
+          <span class="border border-dashed border-border px-4 py-2 text-muted">
+            {t.projects.comingSoon}
+          </span>
+        )
+      }
+    </div>
+  </header>
+
+  {
+    image ? (
+      <img src={image} alt={title} class="w-full border border-border" />
+    ) : (
+      <FallbackImage title={title} stack={stack} variant="detail" />
+    )
+  }
+
+  <div
+    class="prose-readable tw-scope flex flex-col gap-4 text-fg [&_h2]:mt-4 [&_h2]:font-mono [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-accent [&_li]:ml-5 [&_li]:list-disc [&_strong]:text-fg"
+    data-reveal-children
+  >
+    <Content />
+  </div>
+</article>

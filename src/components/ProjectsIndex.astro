@@ -1,0 +1,58 @@
+---
+/*
+  Locale-driven projects index. Reads the locale's collection (`projects` for
+  English, `projectsPt` for Portuguese) and renders the filterable card grid.
+  Rendered by the thin per-locale page shells under src/pages.
+*/
+import ProjectCard from "./ProjectCard.astro";
+import ProjectFilter from "./ProjectFilter.tsx";
+import { useStrings, type Locale } from "../i18n/ui";
+import { getCollection } from "astro:content";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useStrings(locale);
+const projects =
+  locale === "pt"
+    ? await getCollection("projectsPt")
+    : await getCollection("projects");
+
+const filterOptions = [
+  { value: "all", label: t.projects.filter.all },
+  { value: "Systems", label: t.projects.filter.systems },
+  { value: "Frontend", label: t.projects.filter.frontend },
+] as const;
+---
+
+<section class="flex flex-col gap-8 py-8">
+  <header class="flex flex-col gap-2">
+    <h1 class="font-mono text-3xl font-semibold tracking-tight">
+      <span class="text-accent">~/</span><span data-typewriter
+        >{t.projects.title}</span
+      >
+    </h1>
+    <p class="prose-readable max-w-xl text-sm text-muted" data-reveal>
+      {t.projects.intro}
+    </p>
+  </header>
+
+  <ProjectFilter
+    client:load
+    targetId="project-grid"
+    label={t.projects.filter.label}
+    options={filterOptions}
+  />
+
+  <div id="project-grid" data-filter="all" class="grid gap-6 sm:grid-cols-2">
+    {
+      projects.map((project, i) => (
+        <div data-category={project.data.category} class="contents">
+          <ProjectCard project={project} index={i} locale={locale} />
+        </div>
+      ))
+    }
+  </div>
+</section>

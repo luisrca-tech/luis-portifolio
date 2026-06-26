@@ -1,0 +1,78 @@
+---
+title: The Arlow
+blurb: Um site de locação para um prédio de apartamentos de 49 residências em Roslindale, Boston, com disponibilidade e preços de unidades ao vivo, sincronizados a partir do sistema de gestão da propriedade.
+type: Frontend
+origin: Company
+category: Frontend
+stack:
+  - Next.js
+  - TypeScript
+  - Tailwind CSS
+  - Motion
+  - Turso
+  - Drizzle ORM
+  - Buildium API
+  - Mapbox GL
+  - Resend
+role: "Engenheiro frontend: construí o site e a sua camada de disponibilidade ao vivo sobre o sistema compartilhado do time."
+links:
+  live: https://www.arlowroslindale.com/
+image: /og/the-arlow.jpg
+---
+
+## Visão geral
+
+The Arlow é o site de locação de um novo prédio de apartamentos em Roslindale.
+Diferente de uma propriedade à venda, um site de aluguel precisa responder uma
+pergunta rápido: _o que está disponível e quanto custa?_ Então, além das
+superfícies de marketing usuais, este site carrega uma camada de disponibilidade
+ao vivo (plantas, especificações das unidades e preços) que se mantém atualizada
+porque sincroniza a partir do sistema de gestão da propriedade, em vez de ser
+editada à mão.
+
+## Escopo
+
+Uma experiência completa de locação: um hero imersivo e seções de estilo de vida,
+um tour de comodidades, um mapa de vizinhança em Mapbox, uma seção de residências
+apoiada por plantas e detalhe por unidade, e um fluxo de visita/contato. Por
+baixo, um banco de dados de unidades espelha o inventário real do prédio e
+alimenta a disponibilidade e os preços exibidos na página.
+
+## Papel
+
+Engenheiro frontend na construção. Montei o site a partir do sistema de
+componentes compartilhado do time, construí a UI de residências e plantas, e
+implementei a camada de disponibilidade: o modelo de dados, a sincronização
+agendada e as tabelas que renderizam as unidades atuais.
+
+## Stack
+
+- **Next.js + TypeScript**: uma casca de marketing renderizada estaticamente com
+  dados de disponibilidade dinâmicos sobrepostos.
+- **Tailwind CSS**: tematização via CSS variables para que os componentes
+  compartilhados adotem a identidade do prédio.
+- **Motion**: revelações e transições de seção que respeitam
+  `prefers-reduced-motion`.
+- **Turso + Drizzle ORM**: um banco SQLite na edge com um schema tipado guardando
+  o catálogo de unidades: disponibilidade, preços e detalhes de planta.
+- **Buildium API**: uma sincronização agendada que puxa dados de unidades e
+  disponibilidade da plataforma de gestão da propriedade por cron, para que o
+  site nunca mostre inventário desatualizado.
+- **Mapbox GL**: um mapa interativo de vizinhança e transporte.
+- **Resend**: entrega de pedidos de visita e contatos ao time de locação.
+
+## Desafios
+
+O desafio que define o projeto foi manter o inventário listado honesto sem
+manutenção manual. Um site de locação que anuncia uma unidade que já saiu corrói a
+confiança rápido, então a disponibilidade e os preços vêm do sistema de gestão de
+forma agendada, em vez de serem digitados. Reconciliar esses dados externos em um
+schema local tipado, e renderizá-los em tabelas rápidas e filtráveis, foi o
+trabalho de engenharia central sobre a construção de marketing.
+
+## Resultados
+
+Um site de locação no ar que funciona também como um pequeno app de inventário:
+inquilinos em potencial navegam pela disponibilidade real e atual, com plantas e
+preços, e então pedem uma visita em alguns cliques, tudo construído sobre um
+sistema compartilhado e mantido preciso por uma sincronização automatizada.

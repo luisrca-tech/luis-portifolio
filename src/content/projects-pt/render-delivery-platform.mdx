@@ -1,0 +1,84 @@
+---
+title: Plataforma de Entrega de Renders
+blurb: Uma plataforma interna que coordena projetos de visualização arquitetônica, do orçamento ao render final, gerenciando vistas, etapas de revisão, feedback do cliente, pagamentos a artistas e cobranças em um único fluxo de trabalho.
+type: System
+origin: Company
+category: Systems
+stack:
+  - Next.js
+  - TypeScript
+  - PostgreSQL
+  - Prisma
+  - AWS S3
+  - Stripe
+  - Jotai
+  - TanStack Query
+  - Tailwind CSS
+role: "Engenheiro full-stack: modelo de dados, API, pipeline de mídia e UI do dashboard."
+image: /og/render-delivery-platform.png
+---
+
+## Visão geral
+
+Esta é a plataforma de operações de um estúdio de visualização arquitetônica, o
+negócio de transformar plantas de edifícios em renders 3D fotorrealistas. Um
+único projeto passa por muitas mãos: gerentes de projeto definem o escopo do
+trabalho, artistas de render produzem imagens ao longo de várias rodadas de
+revisão, e os clientes revisam e aprovam cada etapa. A plataforma substitui
+threads de e-mail dispersas e planilhas por um único fluxo de trabalho que
+acompanha cada vista, cada revisão e cada pagamento.
+
+## Escopo
+
+O sistema modela todo o pipeline de entrega. Um projeto contém várias **vistas**
+(os ângulos a serem renderizados); cada vista avança por uma sequência de
+**etapas** (do rascunho ao final); cada etapa carrega **revisões** numeradas e as
+imagens enviadas em relação a elas. Os clientes deixam feedback posicional
+diretamente sobre as imagens e aprovam as etapas concluídas. Em torno disso ficam
+um fluxo de proposta e precificação voltado ao cliente, um fluxo de orçamento e
+tarefas para os artistas de render, e um livro-razão financeiro que acompanha
+depósitos, saldos finais e pagamentos aos artistas.
+
+## Papel
+
+Engenheiro full-stack na plataforma. Atuei no modelo de dados relacional, na API,
+no pipeline de mídia apoiado em S3 e na UI do dashboard, incluindo o fluxo de
+etapas/revisões e o controle financeiro que conecta custos, pagamentos e
+repasses.
+
+## Stack
+
+- **Next.js + TypeScript**: o dashboard e a API, totalmente tipados de ponta a
+  ponta.
+- **PostgreSQL + Prisma**: o núcleo relacional (projetos, vistas, etapas,
+  imagens, comentários, propostas e um livro-razão financeiro), com soft-deletes
+  auditados nos registros que envolvem dinheiro.
+- **AWS S3 + URLs pré-assinadas**: uploads diretos e seguros de renders e anexos,
+  com metadados rastreados por arquivo.
+- **Stripe**: cobrança de depósito e saldo final, incluindo status de pagamento
+  acionado por webhook.
+- **Jotai + TanStack Query**: hooks focados e combináveis para estado de
+  servidor, com atualizações otimistas em todo o fluxo de revisão.
+- **Tailwind CSS**: um sistema de componentes construído sobre primitivos
+  acessíveis.
+
+## Desafios
+
+A dificuldade central é que o pipeline é uma máquina de estados rígida sobreposta
+a dinheiro real. As etapas avançam apenas para frente, com uma etapa ativa por
+vista, garantidas transacionalmente para que um projeto nunca pule ou retroceda
+para um estado inconsistente. Além disso, rodam três sistemas de custo paralelos,
+o custo planejado, o livro-razão de pagamentos do cliente e os repasses aos
+artistas, que precisam se reconciliar em números de lucro coerentes. A plataforma
+também suporta duas gerações do fluxo de trabalho ao mesmo tempo, então um
+processo mais novo orientado a propostas e um mais antigo manual coexistem no
+mesmo schema sem quebrar os projetos existentes.
+
+## Resultados
+
+Um sistema em produção que opera toda a entrega de um estúdio em um só lugar: os
+projetos passam por um fluxo de revisão de consistência garantida, os clientes
+revisam e aprovam no próprio app, e o lado financeiro (depósitos, saldos e
+repasses) permanece reconciliado. É um exemplo forte de modelar um processo
+confuso do mundo real como uma máquina de estados aplicável, com dinheiro
+envolvido.

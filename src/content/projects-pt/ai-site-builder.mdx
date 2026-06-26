@@ -1,0 +1,84 @@
+---
+title: Construtor de Sites Imobiliários com IA
+blurb: Um SaaS multi-tenant que gera sites de marketing imobiliário a partir dos documentos e das notas de voz de um imóvel. Um pipeline de IA extrai o conteúdo, valida contra o schema de um template e publica o site.
+type: System
+origin: Company
+category: Systems
+stack:
+  - Next.js
+  - NestJS
+  - TypeScript
+  - PostgreSQL
+  - Drizzle ORM
+  - FastAPI
+  - OpenAI
+  - Whisper
+  - AWS S3
+  - Stripe
+role: "Engenheiro full-stack e de IA: responsável pelo pipeline de geração de conteúdo com IA de ponta a ponta."
+image: /og/ai-site-builder.png
+---
+
+## Visão geral
+
+Esta plataforma transforma o trabalho de construir um site de marketing de um
+imóvel em um fluxo guiado e quase totalmente automatizado. Um corretor envia o
+que já tem sobre um anúncio (documentos, planilhas, até um memo de voz) e o
+sistema extrai os fatos relevantes, redige o conteúdo do site seção por seção e
+produz um site de marketing publicável. É o motor que escala o tipo de site de
+anúncio feito à mão que este estúdio produz, sem criar cada um do zero.
+
+## Escopo
+
+Um SaaS multi-tenant com uma hierarquia clara: usuários pertencem a times, times
+são donos de projetos, e projetos produzem **artefatos**, os sites gerados, cada
+um feito de seções templatizadas (hero, comodidades, galeria, vizinhança)
+validadas contra um schema. O produto abrange onboarding e ingestão de
+documentos/áudio, a etapa de geração com IA, um editor rico para refinamento
+manual, estados de rascunho e publicado versionados, gestão de mídia e cobrança
+por assinatura, com o uso de tokens de LLM rastreado por artefato para controle
+de custo.
+
+## Papel
+
+Engenheiro full-stack na plataforma, responsável pela parte de **engenharia de
+IA**: o pipeline de geração de conteúdo que ingere o material de origem de um
+imóvel e emite conteúdo de seção estruturado e válido contra o schema. Construí o
+parsing de documentos e áudio, a etapa de transcrição, a orquestração de prompts
+e geração, e a validação que mantém a saída da IA dentro do contrato do template.
+
+## Stack
+
+- **Next.js (Turborepo)**: um monorepo de apps focados (dashboard, editor,
+  onboarding) compartilhando um único sistema de componentes.
+- **NestJS + PostgreSQL + Drizzle ORM**: a API central modular e um modelo de
+  dados tipado e escopado por tenant para times, projetos, imóveis e artefatos.
+- **Microsserviço em FastAPI (Python)**: o serviço de IA, isolado da API
+  principal para que a geração possa escalar e falhar de forma independente.
+- **OpenAI + Whisper**: geração de conteúdo a partir do material de origem
+  processado, e transcrição das notas de voz enviadas em texto utilizável.
+- **Parsing de documentos**: ingestão de PDF, DOCX, XLSX e CSV que alimenta o
+  modelo com fatos estruturados em vez de arquivos crus.
+- **AWS S3**: armazenamento de mídia com uploads pré-assinados para imagens e
+  plantas.
+- **Stripe + Supabase**: cobrança por assinatura e autenticação baseada em JWT no
+  frontend multi-app.
+
+## Desafios
+
+O problema central é fazer um modelo de linguagem produzir conteúdo em que um
+sistema de templates possa confiar. Geração livre não basta: cada seção precisa
+satisfazer um schema, respeitar regras por seção e ficar consistente com as
+demais, então o pipeline envolve o modelo em validação e orquestração em vez de
+chamá-lo às cegas. Coordenar um serviço de IA em Python separado com o núcleo em
+TypeScript, manter as fronteiras de tenant intactas entre vários apps e rastrear
+o custo de tokens por geração foram os desafios de engenharia recorrentes.
+
+## Resultados
+
+Um pipeline de IA funcional que comprime horas de criação manual de site em um
+fluxo guiado de gerar e depois refinar: material de origem na entrada, um site de
+marketing estruturado, editável e publicável na saída, com a saída da IA sempre
+restrita ao contrato do template. É o exemplo mais claro deste portfólio de
+colocar um LLM para trabalhar dentro de um produto real, por trás de validação e
+a um custo controlado.
