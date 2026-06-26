@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 /**
@@ -245,15 +245,25 @@ function Rain({
 export default function CodeRainScene() {
   const color = useAccentColor();
   const atlas = useMemo(buildAtlas, []);
+  // Pause the render loop entirely while the tab is backgrounded — no point
+  // animating rain nobody can see, and it frees the GPU/CPU for other tabs.
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     return () => atlas.texture.dispose();
   }, [atlas]);
 
+  useEffect(() => {
+    const onVisibility = () => setVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
   return (
     <Canvas
       orthographic
       dpr={[1, 1.5]}
+      frameloop={visible ? "always" : "never"}
       gl={{ antialias: true, alpha: true }}
       style={{ width: "100%", height: "100%" }}
       camera={{ position: [0, 0, 1] }}

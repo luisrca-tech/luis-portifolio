@@ -12,7 +12,6 @@ import { Box3, Vector3 } from "three";
  */
 
 const MODEL_URL = "/models/mailbox.glb";
-useGLTF.preload(MODEL_URL);
 
 function MailboxModel() {
   const { scene } = useGLTF(MODEL_URL);

@@ -13,7 +13,6 @@ import { Box3, Vector3 } from "three";
  */
 
 const MODEL_URL = "/models/avatar.glb";
-useGLTF.preload(MODEL_URL);
 
 function AvatarModel() {
   const { scene } = useGLTF(MODEL_URL);
