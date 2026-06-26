@@ -93,9 +93,14 @@ const skillIcons = [
     <section class="grid items-center gap-10 md:grid-cols-[1fr_32rem]">
       <div class="flex flex-col gap-4">
         <h2 class="font-mono text-2xl font-semibold tracking-tight">
-          <span class="text-accent">~/</span>{t.home.about.heading}
+          <span class="text-accent">~/</span><span data-typewriter
+            >{t.home.about.heading}</span
+          >
         </h2>
-        <div class="prose-readable flex max-w-2xl flex-col gap-4 text-muted">
+        <div
+          class="prose-readable flex max-w-2xl flex-col gap-4 text-muted"
+          data-reveal-children
+        >
           {t.home.about.body.map((paragraph) => <p>{paragraph}</p>)}
         </div>
 
@@ -146,7 +151,9 @@ const skillIcons = [
     <section class="flex flex-col gap-6">
       <div class="flex items-baseline justify-between gap-4">
         <h2 class="font-mono text-2xl font-semibold tracking-tight">
-          <span class="text-accent">~/</span>{t.home.featured.heading}
+          <span class="text-accent">~/</span><span data-typewriter
+            >{t.home.featured.heading}</span
+          >
         </h2>
         <a
           href="/projects"
@@ -156,20 +163,24 @@ const skillIcons = [
         </a>
       </div>
       <div class="grid gap-6 sm:grid-cols-2">
-        {featured.map((project) => <ProjectCard project={project} />)}
+        {featured.map((project, i) => <ProjectCard project={project} index={i} />)}
       </div>
     </section>
 
     <section
       id="contact"
-      class="grid scroll-mt-24 items-start gap-10 md:grid-cols-[1fr_28rem]"
+      class="grid scroll-mt-24 items-start gap-10 md:grid-cols-[1fr_28rem] md:items-stretch"
     >
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-2">
           <h2 class="font-mono text-2xl font-semibold tracking-tight">
-            <span class="text-accent">~/</span>{t.home.contact.heading}
+            <span class="text-accent">~/</span><span data-typewriter
+              >{t.home.contact.heading}</span
+            >
           </h2>
-          <p class="prose-readable max-w-xl text-muted">{t.home.contact.lead}</p>
+          <p class="prose-readable max-w-xl text-muted" data-reveal>
+            {t.home.contact.lead}
+          </p>
         </div>
 
         <ContactForm
@@ -188,7 +199,7 @@ const skillIcons = [
         />
       </div>
 
-      <div class="flex justify-center md:justify-end">
+      <div class="flex h-full justify-center md:justify-end">
         <Mailbox3D client:only="react" />
       </div>
     </section>

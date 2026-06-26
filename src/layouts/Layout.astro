@@ -28,6 +28,23 @@ const {
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <script is:inline>
+      // Pre-paint guard against a flash of fully-rendered text: hide the
+      // type-on headings and to-be-revealed blocks before the first paint, so
+      // they never appear and then vanish when the motion script takes over.
+      // Skipped under reduced motion (content stays visible); a failsafe reveals
+      // everything if the motion script never runs (e.g. a load error).
+      (function () {
+        try {
+          if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+          var root = document.documentElement;
+          root.classList.add("tw-pending");
+          setTimeout(function () {
+            root.classList.remove("tw-pending");
+          }, 3000);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="flex min-h-dvh flex-col">
     <Nav locale={locale} />
@@ -35,5 +52,8 @@ const {
       <slot />
     </main>
     <Footer locale={locale} />
+    <script>
+      import "../scripts/terminalMotion";
+    </script>
   </body>
 </html>

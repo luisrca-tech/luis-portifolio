@@ -101,6 +101,50 @@
   }
 }
 
+/* Type-on-view cursor: a blinking block that trails text while it is being
+   typed, reusing the hero cursor's look and blink. */
+[data-typewriter].tw-active::after,
+.tw-scope h2.tw-active::after {
+  content: "";
+  display: inline-block;
+  width: 0.55ch;
+  height: 1em;
+  margin-left: 0.1ch;
+  vertical-align: text-bottom;
+  background-color: var(--color-accent);
+  animation: hero-cursor-blink 1.06s steps(1) infinite;
+}
+
+/* Pre-paint guard: hide type-on text and pending reveals until the motion
+   script clears/binds them, so a fully-rendered heading never flashes before
+   typing begins. The `tw-pending` class is only added by an inline head script
+   when JS is on and motion is allowed, so no-JS / reduced-motion stay visible. */
+.tw-pending [data-typewriter],
+.tw-pending .tw-scope h2 {
+  visibility: hidden;
+}
+.tw-pending [data-reveal] {
+  opacity: 0;
+}
+
+/* Scroll reveal: blocks fade and rise into place. Only active once the motion
+   script marks the document ready, so the no-JS / reduced-motion baseline stays
+   fully visible. `--reveal-i` staggers siblings into a quick line-by-line
+   cascade. */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  transition-delay: calc(var(--reveal-i, 0) * 60ms);
+  will-change: opacity, transform;
+}
+.reveal-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 /*
   Motion baseline. Every later animation inherits this: when the visitor asks
   for reduced motion, transitions and animations are effectively disabled.

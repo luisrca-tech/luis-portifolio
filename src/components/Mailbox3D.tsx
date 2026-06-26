@@ -24,7 +24,7 @@ function MailboxModel() {
     const size = box.getSize(new Vector3());
     const center = box.getCenter(new Vector3());
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const scale = 2 / maxDim;
+    const scale = 1.65 / maxDim;
     scene.scale.setScalar(scale);
     scene.position.set(
       -center.x * scale,
@@ -81,12 +81,12 @@ export default function Mailbox3D() {
   return (
     <div
       ref={containerRef}
-      className="relative aspect-square w-full max-w-[28rem]"
+      className="relative aspect-square w-full max-w-[28rem] md:aspect-auto md:h-full"
     >
       {mounted ? (
         <Suspense fallback={<Loader />}>
           <Canvas
-            camera={{ position: [0, 0.2, 3], fov: 35 }}
+            camera={{ position: [0, 0.2, 3.4], fov: 35 }}
             dpr={[1, 2]}
             gl={{ alpha: true, antialias: true }}
             frameloop={autoRotate ? "always" : "demand"}
