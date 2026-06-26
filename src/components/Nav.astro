@@ -1,5 +1,6 @@
 ---
 import { useStrings, type Locale } from "../i18n/ui";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 interface Props {
   locale?: Locale;
@@ -8,10 +9,13 @@ interface Props {
 const { locale = "en" } = Astro.props;
 const t = useStrings(locale);
 
+// Home and contact follow the active locale. Projects pages are not localized
+// yet, so that link stays on the English route until they are translated.
+const home = getRelativeLocaleUrl(locale, "");
 const links = [
-  { href: "/", label: t.nav.home },
+  { href: home, label: t.nav.home },
   { href: "/projects", label: t.nav.projects },
-  { href: "/#contact", label: t.nav.contact },
+  { href: `${home}#contact`, label: t.nav.contact },
 ];
 ---
 
@@ -19,7 +23,7 @@ const links = [
   class="sticky top-0 z-50 border-b border-border bg-base/80 backdrop-blur supports-[backdrop-filter]:bg-base/60"
 >
   <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-    <a href="/" class="group font-mono text-sm">
+    <a href={home} class="group font-mono text-sm">
       <span class="text-accent">~/</span><span class="text-fg">{t.brand}</span>
     </a>
 

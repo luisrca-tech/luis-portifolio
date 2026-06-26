@@ -185,8 +185,109 @@ const en: UIStrings = {
   },
 };
 
-// Reserved for PT-BR. Intentionally empty in v1 — falls back to `en`.
-const pt: Partial<UIStrings> = {};
+// Brazilian Portuguese. Mirrors `en` exactly in meaning — no information added
+// or dropped. Per pt-BR convention, the em-dash (—) sentence pattern from the
+// English copy is rephrased with commas/colons. Job titles and established
+// technical terms (RAG, TDD, Full Stack, RAG, type-safe, etc.) are kept as the
+// industry uses them in Brazil.
+const pt: UIStrings = {
+  brand: "Luis Felipe Da Rocha",
+  role: "Desenvolvedor Full Stack / Engenheiro de IA",
+  nav: {
+    home: "início",
+    projects: "projetos",
+    contact: "contato",
+  },
+  cta: {
+    talk: "aberto a vagas e projetos, vamos conversar",
+    downloadCv: "Baixar CV (PDF)",
+  },
+  home: {
+    hero: {
+      promptWhoami: "whoami",
+      promptContact: "./aberto-para-trabalhar --vagas --projetos",
+    },
+    about: {
+      heading: "sobre",
+      body: [
+        "Desenvolvedor Full Stack / Engenheiro de IA que constrói sistemas em produção onde a decisão de arquitetura é o resultado de negócio. Na Naranja Labs sou responsável por soluções de ponta a ponta para clientes do mercado dos EUA, incluindo a plataforma que opera o pipeline de renderização 3D de um estúdio, da proposta à produção em etapas até a entrega e a cobrança, apoiada por um harness de auditoria somente leitura que verifica cada KPI financeiro contra os dados de produção até o último centavo.",
+        "Liderei a evolução de uma ferramenta de conteúdo de provedor único para um orquestrador RAG multi-modelo roteado entre provedores de LLM por trás de microsserviços desacoplados, e entreguei o dashboard financeiro que se tornou a fonte única de verdade da liderança. De forma independente, arquiteto produtos SaaS multi-tenant completos, de CRMs a chat-as-a-service em tempo real, feitos para vender, com cobrança, autenticação e isolamento de dados por tenant.",
+        "Combino fundamentos sólidos (TDD, APIs type-safe, arquitetura limpa) com um fluxo de trabalho disciplinado e potencializado por IA: desenvolvimento orientado a especificação, looping agêntico e skills e sub-agentes customizados no Cursor e no Claude Code, tratando a IA como um instrumento sob controle de engenharia, não como piloto automático, e revisando cada resultado para manter as mudanças dentro do escopo.",
+      ],
+      stats: [
+        { value: "~68%", label: "margem de lucro verificada" },
+        { value: "66%", label: "menor latência e custo de IA" },
+        { value: "300+", label: "projetos no pipeline" },
+        { value: "6 meses", label: "Júnior → Pleno" },
+      ],
+      status: ["aberto a oportunidades", "remoto"],
+      badges: [
+        "RAG",
+        "Orquestração Multi-LLM",
+        "Agentes de IA",
+        "Arquitetura SaaS",
+        "TDD",
+      ],
+    },
+    featured: {
+      heading: "trabalhos em destaque",
+      viewAll: "ver todos os projetos",
+    },
+    contact: {
+      heading: "contato",
+      lead: "Aberto a trabalho full-time, por contrato e freelance. Conte sobre uma vaga ou um projeto abaixo, ou fale comigo diretamente por qualquer canal.",
+      email: "luisrochacruzalves@gmail.com",
+      copyEmail: "Copiar e-mail",
+      copied: "Copiado!",
+      form: {
+        name: "Nome",
+        namePlaceholder: "João da Silva",
+        email: "E-mail",
+        emailPlaceholder: "joao@empresa.com",
+        company: "Empresa / Organização",
+        companyPlaceholder: "Acme Ltda (opcional)",
+        type: "Sobre o que é?",
+        typeOptions: [
+          { value: "Role", label: "Uma vaga" },
+          { value: "Project", label: "Um projeto" },
+          { value: "Other", label: "Outro assunto" },
+        ],
+        details: "Detalhes",
+        detailsPlaceholder: {
+          Role: "Conte sobre a vaga: time, stack, senioridade, local / remoto e para o que está contratando.",
+          Project: "Conte sobre o projeto: objetivos, escopo, prazo aproximado e faixa de orçamento, se tiver uma.",
+          Other: "O que você tem em mente?",
+        },
+        submit: "Enviar mensagem",
+        sending: "Enviando…",
+        success: "Obrigado, sua mensagem está a caminho. Responderei por e-mail em breve.",
+        error: "Algo deu errado ao enviar sua mensagem. Por favor, envie um e-mail diretamente.",
+      },
+    },
+  },
+  socials: {
+    linkedin: "https://www.linkedin.com/in/luisfelipedarocha/",
+    github: "https://github.com/luisrca-tech",
+  },
+  projects: {
+    title: "projetos",
+    intro: "Trabalhos selecionados: uma amostra representativa, não uma lista exaustiva.",
+    viewCode: "Ver código",
+    viewLive: "Ver online",
+    comingSoon: "Em breve",
+    back: "voltar aos projetos",
+    filter: {
+      label: "filtrar",
+      all: "todos",
+      systems: "sistemas",
+      frontend: "frontend",
+    },
+  },
+  footer: {
+    builtWith: "Feito com Astro, React e Tailwind",
+    rights: "Todos os direitos reservados.",
+  },
+};
 
 const dictionaries: Record<Locale, Partial<UIStrings>> = { en, pt };
 

@@ -1,0 +1,55 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { Locale } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+// Plain anchors trigger a full document navigation (no client router is
+// enabled), so switching language hard-refreshes the page as required.
+// Flags are self-hosted SVGs in /public/flags to render consistently across OSes.
+const langs: { code: Locale; flag: string; label: string; url: string }[] = [
+  { code: "en", flag: "/flags/us.svg", label: "English", url: getRelativeLocaleUrl("en", "") },
+  { code: "pt", flag: "/flags/br.svg", label: "Português", url: getRelativeLocaleUrl("pt", "") },
+];
+---
+
+<div class="flex items-center gap-2 font-mono text-xs">
+  {
+    langs.map((l) =>
+      l.code === locale ? (
+        <span
+          aria-current="true"
+          class="flex items-center gap-1.5 border border-accent px-2 py-1 text-accent"
+        >
+          <img
+            src={l.flag}
+            alt={`${l.label} flag`}
+            width="20"
+            height="14"
+            class="h-3.5 w-5 object-cover"
+          />
+          <span class="uppercase">{l.code}</span>
+        </span>
+      ) : (
+        <a
+          href={l.url}
+          aria-label={`Switch to ${l.label}`}
+          class="group flex items-center gap-1.5 border border-border px-2 py-1 text-muted opacity-60 transition-all hover:border-accent hover:text-accent hover:opacity-100"
+        >
+          <img
+            src={l.flag}
+            alt={`${l.label} flag`}
+            width="20"
+            height="14"
+            class="h-3.5 w-5 object-cover grayscale transition-all group-hover:grayscale-0"
+          />
+          <span class="uppercase">{l.code}</span>
+        </a>
+      )
+    )
+  }
+</div>

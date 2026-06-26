@@ -1,0 +1,11 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import HomePage from "../../components/HomePage.astro";
+import type { Locale } from "../../i18n/ui";
+
+const locale = (Astro.currentLocale as Locale) ?? "pt";
+---
+
+<Layout>
+  <HomePage locale={locale} />
+</Layout>
