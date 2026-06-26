@@ -38,9 +38,9 @@ const {
         try {
           if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
           var root = document.documentElement;
-          root.classList.add("tw-pending");
+          root.classList.add("tw-pending", "hero-pending");
           setTimeout(function () {
-            root.classList.remove("tw-pending");
+            root.classList.remove("tw-pending", "hero-pending");
           }, 3000);
         } catch (e) {}
       })();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 interface HeroTerminalProps {
   name: string;
@@ -36,10 +36,11 @@ export default function HeroTerminal({
   const [typed, setTyped] = useState(totalLen);
   const [animating, setAnimating] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    document.documentElement.classList.remove("hero-pending");
     if (reduce) return;
     setAnimating(true);
     setTyped(0);
@@ -83,7 +84,7 @@ export default function HeroTerminal({
   const visible = (i: number) => fullyTyped || shown(i) > 0;
 
   return (
-    <div className="flex flex-col gap-3 font-mono">
+    <div className="flex flex-col gap-3 font-mono" data-hero-terminal>
       {/* $ whoami */}
       <p className="text-sm text-muted">
         <span className="text-accent">$</span> {text(0)}

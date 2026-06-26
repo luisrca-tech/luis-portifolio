@@ -127,6 +127,12 @@
   opacity: 0;
 }
 
+/* Hide the hero terminal until React hydrates and clears `hero-pending`, so
+   SSR'd full text never flashes before the boot type-on begins. */
+.hero-pending [data-hero-terminal] {
+  visibility: hidden;
+}
+
 /* Scroll reveal: blocks fade and rise into place. Only active once the motion
    script marks the document ready, so the no-JS / reduced-motion baseline stays
    fully visible. `--reveal-i` staggers siblings into a quick line-by-line
