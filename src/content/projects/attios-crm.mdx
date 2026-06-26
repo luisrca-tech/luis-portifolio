@@ -1,0 +1,76 @@
+---
+title: Attios CRM
+blurb: A multi-tenant CRM SaaS where each workspace runs an isolated sales operation — products, customers, leads, orders, and invoices — under its own subdomain.
+type: System
+origin: Personal
+category: Systems
+stack:
+  - Next.js
+  - TypeScript
+  - tRPC
+  - Drizzle ORM
+  - PostgreSQL
+  - Clerk
+  - Tailwind CSS
+  - Zod
+role: Sole architect & developer — data model, multi-tenant routing, type-safe API, and UI.
+links:
+  comingSoon: true
+---
+
+## Overview
+
+Attios is a multi-tenant CRM built as a complete SaaS product, not a demo. Each
+customer gets an isolated **workspace** — addressed by its own subdomain — that
+owns its products, customers, leads, orders, and invoices. The goal was a single
+codebase that serves many independent businesses without ever letting one
+workspace's data leak into another's.
+
+## Scope
+
+A full sales-operations surface: a catalogue (products, brands, categories,
+tags), a customer and lead pipeline, an order flow, and a multi-step invoice
+builder that supports both internal salespeople and external sellers and
+computes totals from subtotal, additional costs, and taxes. Workspaces and teams
+sit on top, so a business can invite members and collaborate inside its own
+tenant.
+
+## Role
+
+Sole architect and developer. I designed the relational schema, the tenant model
+and subdomain routing, the type-safe API, and the UI — every layer from the
+database to the screen.
+
+## Stack
+
+- **Next.js (App Router) + TypeScript** — the application shell, routing, and a
+  fully typed codebase end to end.
+- **tRPC** — a type-safe API with no schema drift between client and server;
+  every router takes the active `workspaceId` so queries are tenant-scoped by
+  construction.
+- **Drizzle ORM + PostgreSQL** — the relational core, with every resource keyed
+  by `workspaceId` for per-tenant isolation.
+- **Clerk** — authentication and session management; the signed-in user resolves
+  to a workspace before any data is read.
+- **Zod + React Hook Form** — validated forms and a single source of truth for
+  input shape across client and server.
+- **Tailwind CSS + Radix UI** — accessible, composable UI primitives styled to a
+  consistent system.
+- **TanStack Query + Jotai** — server-state caching and lightweight client state
+  where interactivity needs it.
+
+## Challenges
+
+The defining challenge is multi-tenancy: the same code serves every customer, so
+isolation has to be structural rather than incidental. Tenants are resolved from
+the request host, every table carries a `workspaceId`, and the API filters on it
+at the query layer. The invoice builder added a second axis of complexity —
+modeling internal-vs-external sellers and deriving totals correctly through a
+multi-step form without losing validation guarantees.
+
+## Outcomes
+
+A working, isolated multi-tenant foundation: a business can run its full
+catalogue, pipeline, and invoicing inside its own workspace, cleanly separated
+from every other tenant. The product is in pre-launch — the public URL lands here
+once it goes live.

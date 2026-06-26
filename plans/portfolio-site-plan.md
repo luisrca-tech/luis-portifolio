@@ -79,12 +79,12 @@ The 30-second scannable home page. Build the terminal-boot hero (name, job title
 
 ### Acceptance criteria
 
-- [ ] Hero shows name, clear job title, and a one-line pitch with the primary CTA; a recruiter can grasp seniority/focus immediately.
-- [ ] Hero motion is a "boot / type-on" effect that respects `prefers-reduced-motion`.
-- [ ] An about summary renders in outcome-first, CV-mirroring voice.
-- [ ] A featured-projects strip renders 3–4 cards sourced from the content collection (reusing Phase 2 card rendering).
-- [ ] A "Download CV (PDF)" button serves the existing CV file and downloads successfully.
-- [ ] A contact section anchor and footer exist on Home (form/social wired in later phases).
+- [x] Hero shows name, clear job title, and a one-line pitch with the primary CTA; a recruiter can grasp seniority/focus immediately.
+- [x] Hero motion is a "boot / type-on" effect that respects `prefers-reduced-motion`.
+- [x] An about summary renders in outcome-first, CV-mirroring voice.
+- [x] A featured-projects strip renders 3–4 cards sourced from the content collection (reusing Phase 2 card rendering).
+- [x] A "Download CV (PDF)" button serves the existing CV file and downloads successfully.
+- [x] A contact section anchor and footer exist on Home (form/social wired in later phases).
 
 ---
 
@@ -98,11 +98,11 @@ Make the projects index a real, scannable, filterable grid. Add the **All · Sys
 
 ### Acceptance criteria
 
-- [ ] Filter control toggles All · Systems · Frontend and correctly filters the grid by `category`.
-- [ ] Each card displays a Company-vs-Personal badge derived from `origin`.
-- [ ] A clear, concise "selected work" disclaimer is visible on the index, communicating the list is a representative selection.
-- [ ] Attios CRM renders a "coming soon" state (no live link) driven by `links.comingSoon`; DeliveryChat shows its live link.
-- [ ] DeliveryChat and Attios CRM exist as MDX files and render as cards + detail pages.
+- [x] Filter control toggles All · Systems · Frontend and correctly filters the grid by `category`.
+- [x] Each card displays a Company-vs-Personal badge derived from `origin`.
+- [x] A clear, concise "selected work" disclaimer is visible on the index, communicating the list is a representative selection.
+- [x] Attios CRM renders a "coming soon" state (no live link) driven by `links.comingSoon`; DeliveryChat shows its live link.
+- [x] DeliveryChat and Attios CRM exist as MDX files and render as cards + detail pages.
 
 ---
 

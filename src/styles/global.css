@@ -67,6 +67,17 @@
   }
 }
 
+/*
+  Projects-index filtering. The ProjectFilter island writes the active value
+  onto `#project-grid[data-filter]`; these rules hide the cards whose
+  `data-category` doesn't match. `all` (the default, and the no-JS baseline)
+  matches nothing here, so every card stays visible.
+*/
+[data-filter="Systems"] [data-category="Frontend"],
+[data-filter="Frontend"] [data-category="Systems"] {
+  display: none;
+}
+
 /* Terminal-boot cursor: a blinking block that trails the typed text. The
    reduced-motion baseline below freezes the blink to a steady block. */
 .hero-cursor {
