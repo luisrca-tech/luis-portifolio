@@ -33,7 +33,7 @@ const inputClass =
   "transition-colors placeholder:text-muted focus:border-accent focus:outline-none";
 const labelClass = "flex flex-col gap-1.5 font-mono text-sm text-muted";
 const copyButtonClass =
-  "border border-border px-3 py-1.5 font-mono text-sm text-muted transition-colors " +
+  "cursor-pointer border border-border px-4 py-2 font-mono text-sm text-muted transition-colors " +
   "hover:border-accent hover:text-accent";
 
 /**
@@ -206,7 +206,7 @@ export default function ContactForm({
         <button
           type="submit"
           disabled={status === "sending"}
-          className="border border-accent px-4 py-2 font-mono text-sm text-accent transition-colors hover:bg-accent hover:text-base disabled:cursor-not-allowed disabled:opacity-60"
+          className="cursor-pointer border border-accent px-4 py-2 font-mono text-sm text-accent transition-colors hover:bg-accent hover:text-base disabled:cursor-not-allowed disabled:opacity-60"
         >
           {status === "sending" ? strings.sending : `${strings.submit} →`}
         </button>

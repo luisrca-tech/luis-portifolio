@@ -279,10 +279,144 @@ function attios() {
     Next.js · tRPC · Drizzle · Clerk · workspace-scoped by construction</text>`;
 }
 
+/* ---------------------------------------------------------------------------
+   Card 4 — AI Real-Estate Site Builder  (anonymized; no repo to sample)
+   Generative-AI identity: deep indigo with violet + teal accents.
+   Motif: the pipeline — property docs & voice notes → AI core → schema-valid
+   template sections.
+--------------------------------------------------------------------------- */
+function aiSiteBuilder() {
+  const bg = "#0e0f1a";
+  const panel = "#191b2c";
+  const panelLine = "#2a2d44";
+  const white = "#ffffff";
+  const ink = "#1a1b2e";
+  const violet = "#6d5efc";
+  const violetLight = "#a99bff";
+  const teal = "#34e1c4";
+  const muted = "#8a8da6";
+
+  // Pipeline geometry: input cards → AI core → output wireframe.
+  const bandTop = 392;
+  const cardW = 210;
+  const cardH = 52;
+  const inputs = [
+    { y: bandTop, label: "PDF · DOCX · XLSX", glyph: "doc" },
+    { y: bandTop + 64, label: "VOICE NOTE", glyph: "wave" },
+  ];
+  const inputEls = inputs
+    .map((c) => {
+      const x = 80;
+      const glyph =
+        c.glyph === "doc"
+          ? `<rect x="${x + 16}" y="${c.y + 14}" width="20" height="24" rx="3" fill="none" stroke="${violetLight}" stroke-width="2"/>
+             <line x1="${x + 21}" y1="${c.y + 22}" x2="${x + 31}" y2="${c.y + 22}" stroke="${violetLight}" stroke-width="2"/>
+             <line x1="${x + 21}" y1="${c.y + 28}" x2="${x + 31}" y2="${c.y + 28}" stroke="${violetLight}" stroke-width="2"/>`
+          : `<g stroke="${teal}" stroke-width="2.5" stroke-linecap="round">
+             <line x1="${x + 17}" y1="${c.y + 26}" x2="${x + 17}" y2="${c.y + 30}"/>
+             <line x1="${x + 23}" y1="${c.y + 20}" x2="${x + 23}" y2="${c.y + 36}"/>
+             <line x1="${x + 29}" y1="${c.y + 16}" x2="${x + 29}" y2="${c.y + 40}"/>
+             <line x1="${x + 35}" y1="${c.y + 22}" x2="${x + 35}" y2="${c.y + 34}"/></g>`;
+      return `
+      <rect x="${x}" y="${c.y}" width="${cardW}" height="${cardH}" rx="8" fill="${panel}" stroke="${panelLine}"/>
+      ${glyph}
+      <text x="${x + 52}" y="${c.y + 32}" font-family="${inter}" font-size="15"
+            font-weight="600" letter-spacing="1" fill="#c9cbe0">${c.label}</text>`;
+    })
+    .join("");
+
+  // AI core node, vertically centered on the input stack.
+  const coreX = 430;
+  const coreCy = bandTop + (cardH + 64) / 2 + 6;
+  const core = `
+    <circle cx="${coreX}" cy="${coreCy}" r="58" fill="${violet}" opacity="0.18"/>
+    <circle cx="${coreX}" cy="${coreCy}" r="42" fill="${violet}"/>
+    <text x="${coreX}" y="${coreCy + 9}" font-family="${inter}" font-size="26"
+          font-weight="800" fill="${white}" text-anchor="middle">AI</text>
+    <path d="M${coreX + 40} ${coreCy - 44} l4 11 l11 4 l-11 4 l-4 11 l-4 -11 l-11 -4 l11 -4 Z" fill="${teal}"/>
+    <text x="${coreX}" y="${coreCy + 78}" font-family="${inter}" font-size="14"
+          fill="${muted}" text-anchor="middle">OpenAI · Whisper</text>`;
+
+  // Output wireframe: a browser window of validated template sections.
+  const ox = 600;
+  const oy = bandTop - 6;
+  const ow = 520;
+  const oh = 150;
+  const sections = ["HERO", "AMENITIES", "GALLERY", "NEIGHBORHOOD"];
+  const chips = sections
+    .map((s, i) => {
+      const cw = (ow - 48 - 3 * 12) / 4;
+      const x = ox + 24 + i * (cw + 12);
+      return `
+      <rect x="${x}" y="${oy + 96}" width="${cw}" height="34" rx="5" fill="#20233a" stroke="${panelLine}"/>
+      <rect x="${x}" y="${oy + 96}" width="${cw}" height="3" rx="1.5" fill="${violetLight}"/>
+      <text x="${x + cw / 2}" y="${oy + 117}" font-family="${inter}" font-size="11"
+            font-weight="700" letter-spacing="0.5" fill="#a6a9c4" text-anchor="middle">${s}</text>`;
+    })
+    .join("");
+  const output = `
+    <rect x="${ox}" y="${oy}" width="${ow}" height="${oh}" rx="10" fill="${panel}" stroke="${panelLine}"/>
+    <line x1="${ox}" y1="${oy + 34}" x2="${ox + ow}" y2="${oy + 34}" stroke="${panelLine}"/>
+    <circle cx="${ox + 22}" cy="${oy + 17}" r="4.5" fill="#3a3d5c"/>
+    <circle cx="${ox + 40}" cy="${oy + 17}" r="4.5" fill="#3a3d5c"/>
+    <circle cx="${ox + 58}" cy="${oy + 17}" r="4.5" fill="#3a3d5c"/>
+    <rect x="${ox + ow - 150}" y="${oy + 9}" width="130" height="18" rx="9" fill="#20233a"/>
+    <circle cx="${ox + ow - 134}" cy="${oy + 18}" r="4" fill="${teal}"/>
+    <text x="${ox + ow - 122}" y="${oy + 22}" font-family="${inter}" font-size="12"
+          fill="${teal}">schema-valid</text>
+    <rect x="${ox + 24}" y="${oy + 50}" width="${ow - 48}" height="34" rx="5" fill="#20233a"/>
+    <rect x="${ox + 24}" y="${oy + 50}" width="${ow - 48}" height="34" rx="5" fill="${violet}" opacity="0.16"/>
+    ${chips}`;
+
+  // Connector arrows between the three stages.
+  const arrowY = coreCy;
+  const arrows = `
+    <path d="M298 ${arrowY} h66" stroke="${violet}" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M358 ${arrowY - 6} l8 6 l-8 6" fill="none" stroke="${violet}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M476 ${arrowY} h110" stroke="${violet}" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M580 ${arrowY - 6} l8 6 l-8 6" fill="none" stroke="${violet}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+  return `
+  <rect width="${W}" height="${H}" fill="${bg}"/>
+
+  <!-- white header bar -->
+  <rect x="0" y="0" width="${W}" height="150" fill="${white}"/>
+  <line x1="0" y1="150" x2="${W}" y2="150" stroke="#ececf2"/>
+  <rect x="80" y="51" width="48" height="48" rx="12" fill="${violet}"/>
+  <text x="104" y="84" font-family="${inter}" font-size="22" font-weight="800"
+        fill="${white}" text-anchor="middle">AI</text>
+  <text x="148" y="84" font-family="${inter}" font-size="26" font-weight="700"
+        fill="${ink}">AI Real-Estate Site Builder</text>
+  <text x="1120" y="84" font-family="${inter}" font-size="16" font-weight="600"
+        letter-spacing="2" fill="#9a9db0" text-anchor="end">GENERATIVE · MULTI-TENANT</text>
+
+  <!-- eyebrow -->
+  <text x="80" y="226" font-family="${inter}" font-size="18" font-weight="700"
+        letter-spacing="2.5" fill="${violetLight}">INTAKE · TRANSCRIBE · GENERATE · VALIDATE</text>
+
+  <!-- headline -->
+  <text x="78" y="300" font-family="${inter}" font-size="42" font-weight="800"
+        fill="${white}">Property docs and voice notes in —</text>
+  <text x="78" y="350" font-family="${inter}" font-size="42" font-weight="800"
+        fill="${white}">a schema-valid marketing site out.</text>
+
+  <!-- pipeline motif -->
+  ${inputEls}
+  ${core}
+  ${output}
+  ${arrows}
+
+  <!-- footer -->
+  <line x1="80" y1="568" x2="1120" y2="568" stroke="${panelLine}"/>
+  <text x="80" y="600" font-family="${inter}" font-size="18" fill="${muted}">
+    Next.js · NestJS · FastAPI · OpenAI · Whisper · token cost tracked per artifact</text>`;
+}
+
 const cards = [
   { name: "agency-operations-dashboard", body: agencyOps() },
   { name: "render-delivery-platform", body: renderDelivery() },
   { name: "attios-crm", body: attios() },
+  { name: "ai-site-builder", body: aiSiteBuilder() },
 ];
 
 for (const { name, body } of cards) {
