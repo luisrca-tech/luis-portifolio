@@ -1,0 +1,76 @@
+---
+title: The Arlow
+blurb: A leasing site for a 49-residence apartment building in Roslindale, Boston — with live unit availability and pricing synced from the property's management system.
+type: Frontend
+origin: Company
+category: Frontend
+stack:
+  - Next.js
+  - TypeScript
+  - Tailwind CSS
+  - Motion
+  - Turso
+  - Drizzle ORM
+  - Buildium API
+  - Mapbox GL
+  - Resend
+role: Frontend engineer — built the site and its live-availability layer on the team's shared system.
+links:
+  live: https://www.arlowroslindale.com/
+---
+
+## Overview
+
+The Arlow is the leasing site for a new apartment building in Roslindale. Unlike
+a for-sale property, a rental site has to answer one question fast: _what's
+available, and what does it cost?_ So beyond the usual marketing surfaces, this
+site carries a live availability layer — floorplans, unit specs, and pricing
+that stay current because they sync from the building's property-management
+system instead of being hand-edited.
+
+## Scope
+
+A full leasing experience: an immersive hero and lifestyle sections, an
+amenities tour, a Mapbox neighborhood map, a residences section backed by
+floorplans and per-unit detail, and a tour/inquiry flow. Underneath, a database
+of units mirrors the building's real inventory and feeds the availability and
+pricing shown on the page.
+
+## Role
+
+Frontend engineer on the build. I assembled the site from the team's shared
+component system, built the residences and floorplan UI, and implemented the
+availability layer — the data model, the scheduled sync, and the tables that
+render current units.
+
+## Stack
+
+- **Next.js + TypeScript** — a statically-rendered marketing shell with dynamic
+  availability data layered in.
+- **Tailwind CSS** — CSS-variable theming so shared components adopt the
+  building's identity.
+- **Motion** — section reveals and transitions that respect
+  `prefers-reduced-motion`.
+- **Turso + Drizzle ORM** — an edge SQLite database with a typed schema holding
+  the unit catalog: availability, pricing, and floorplan details.
+- **Buildium API** — a scheduled sync that pulls unit and availability data from
+  the property-management platform on a cron, so the site never shows stale
+  inventory.
+- **Mapbox GL** — an interactive neighborhood and transit map.
+- **Resend** — delivery of tour requests and inquiries to the leasing team.
+
+## Challenges
+
+The defining challenge was keeping listed inventory honest without manual
+upkeep. A leasing site that advertises a unit that's already gone erodes trust
+fast, so availability and pricing are sourced from the management system on a
+schedule rather than typed in. Reconciling that external data into a typed local
+schema — and rendering it in fast, filterable tables — was the core engineering
+work on top of the marketing build.
+
+## Outcomes
+
+A live leasing site that doubles as a small inventory app: prospective tenants
+browse real, current availability with floorplans and pricing, then request a
+tour in a couple of clicks — all built on a shared system and kept accurate by
+an automated sync.

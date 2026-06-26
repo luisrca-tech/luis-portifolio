@@ -1,0 +1,78 @@
+---
+title: Render Delivery Platform
+blurb: An internal platform that coordinates architectural-visualization projects from quote to final render — managing views, revision stages, client feedback, artist payouts, and payments in one workflow.
+type: System
+origin: Company
+category: Systems
+stack:
+  - Next.js
+  - TypeScript
+  - PostgreSQL
+  - Prisma
+  - AWS S3
+  - Stripe
+  - Jotai
+  - TanStack Query
+  - Tailwind CSS
+role: Full-stack engineer — data model, API, media pipeline, and dashboard UI.
+---
+
+## Overview
+
+This is the operations platform for an architectural-visualization studio — the
+business of turning building plans into photorealistic 3D renders. A single
+project moves through many hands: project managers scope the work, render
+artists produce images over several revision rounds, and clients review and
+approve each step. The platform replaces scattered email threads and
+spreadsheets with one workflow that tracks every view, every revision, and every
+payment.
+
+## Scope
+
+The system models the full delivery pipeline. A project contains multiple
+**views** (the angles to be rendered); each view advances through a sequence of
+**stages** (draft to final); each stage carries numbered **revisions** and the
+images submitted against them. Clients leave position-based feedback directly on
+images and approve completed stages. Around this sits a client-facing proposal
+and pricing flow, a render-artist job and quoting workflow, and a financial
+ledger that tracks deposits, final balances, and artist payouts.
+
+## Role
+
+Full-stack engineer on the platform. I worked across the relational data model,
+the API, the S3-backed media pipeline, and the dashboard UI, including the
+stage/revision workflow and the financial tracking that ties costs, payments,
+and payouts together.
+
+## Stack
+
+- **Next.js + TypeScript** — the dashboard and API, fully typed end to end.
+- **PostgreSQL + Prisma** — the relational core: projects, views, stages,
+  images, comments, proposals, and a financial ledger, with audited soft-deletes
+  on money-bearing records.
+- **AWS S3 + presigned URLs** — direct, secure uploads for renders and
+  attachments, with metadata tracked per file.
+- **Stripe** — deposit and final-balance collection, including webhook-driven
+  payment status.
+- **Jotai + TanStack Query** — focused, composable hooks for server state with
+  optimistic updates across the review workflow.
+- **Tailwind CSS** — a component system built on accessible primitives.
+
+## Challenges
+
+The defining difficulty is that the pipeline is a strict state machine layered
+over real money. Stages progress forward-only, one active stage per view,
+enforced transactionally so a project can never skip or rewind into an
+inconsistent state. On top of that run three parallel cost systems — planned
+cost, the client payment ledger, and artist payouts — that have to reconcile
+into coherent profit figures. The platform also supports two generations of the
+workflow at once, so a newer proposal-first process and an older manual one
+coexist on the same schema without breaking existing projects.
+
+## Outcomes
+
+A production system that runs a studio's entire delivery operation in one place:
+projects move through a guaranteed-consistent revision workflow, clients review
+and approve in-app, and the financial side — deposits, balances, and payouts —
+stays reconciled. It is a strong example of modeling a messy real-world process
+as an enforceable state machine with money attached.

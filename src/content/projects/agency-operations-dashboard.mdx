@@ -1,0 +1,74 @@
+---
+title: Agency Operations Dashboard
+blurb: An internal operations and finance dashboard for a service agency — time tracking, project financials, and payment collection behind a strict privacy boundary, built contract-first with a generated API client.
+type: System
+origin: Company
+category: Systems
+stack:
+  - Hono
+  - TypeScript
+  - PostgreSQL
+  - Drizzle ORM
+  - Better Auth
+  - OpenAPI
+  - Stripe
+  - Next.js
+  - Tailwind CSS
+role: Full-stack engineer — API, data model, role-based access, and dashboard UI.
+---
+
+## Overview
+
+This is the internal dashboard a service-based agency runs its operations on:
+who logged what hours, what each project is worth, and what's owed. The central
+constraint shapes everything — most staff must never see financial figures. So
+the system is built around a hard privacy boundary between operational and
+financial data, enforced at the API rather than hidden in the UI.
+
+## Scope
+
+A back-office operations tool covering time tracking against projects, a project
+catalog with a status lifecycle, role-based user management, and an immutable
+audit trail of every change. On top of that sit financial reporting and a
+payment-request flow that issues branded payment links and collects through a
+hosted checkout. The product is designed and shipped in vertical slices, each
+adding a working operational surface.
+
+## Role
+
+Full-stack engineer on the platform. I worked across the Hono API, the Drizzle
+data model, the role-based access layer, and the Next.js dashboard — including
+the privacy boundary, the audit logging, and the time-tracking surfaces.
+
+## Stack
+
+- **Hono + TypeScript** — a lightweight, modular API with feature-based routers.
+- **PostgreSQL + Drizzle ORM** — the typed data model: users and roles,
+  projects, immutable time entries, and an append-only audit log with
+  before/after snapshots.
+- **Better Auth** — sessions, password flows, and authentication-event auditing.
+- **OpenAPI (contract-first)** — a Zod-driven OpenAPI spec as the single source
+  of truth, with the frontend client generated from it so types never drift.
+- **Stripe** — payment links and hosted checkout for collecting on projects.
+- **Next.js + Tailwind CSS** — the dashboard UI, with TanStack Query for server
+  state and drag-and-drop workflow boards.
+
+## Challenges
+
+The defining challenge is the privacy boundary: certain roles must be unable to
+read any financial field, and "unable" has to mean structurally impossible, not
+merely hidden. Enforcement lives in role-checked middleware and per-endpoint
+response shaping, not in the frontend. Around it, financial records are
+immutable — time entries are voided rather than deleted, money-bearing rows use
+restrictive foreign keys, and an append-only audit log captures every mutation —
+so the system stays trustworthy under scrutiny. Keeping the contract-first
+OpenAPI spec and the generated client in lockstep imposed a strict
+schema-to-client workflow.
+
+## Outcomes
+
+A production operations dashboard where an agency tracks time, manages project
+financials, and collects payments — with a genuinely enforced separation between
+who can see operational data and who can see money, and a complete audit trail
+behind every change. It is a strong example of building access control and data
+integrity into a system's foundations rather than bolting them on.

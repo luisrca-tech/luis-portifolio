@@ -1,0 +1,81 @@
+---
+title: AI Real-Estate Site Builder
+blurb: A multi-tenant SaaS that generates real-estate marketing websites from a property's documents and voice notes — an AI pipeline extracts the content, validates it to a template schema, and publishes a site.
+type: System
+origin: Company
+category: Systems
+stack:
+  - Next.js
+  - NestJS
+  - TypeScript
+  - PostgreSQL
+  - Drizzle ORM
+  - FastAPI
+  - OpenAI
+  - Whisper
+  - AWS S3
+  - Stripe
+role: Full-stack & AI engineer — owned the AI content-generation pipeline end to end.
+---
+
+## Overview
+
+This platform turns the work of building a property marketing website into a
+guided, mostly-automated flow. An agent uploads what they already have about a
+listing — documents, spreadsheets, even a voice memo — and the system extracts
+the relevant facts, drafts the site's content section by section, and produces a
+publishable marketing site. It is the engine that scales out the kind of
+hand-built listing sites this studio produces, without authoring each one from
+scratch.
+
+## Scope
+
+A multi-tenant SaaS with a clear hierarchy: users belong to teams, teams own
+projects, and projects produce **artifacts** — the generated websites, each
+made of templated sections (hero, amenities, gallery, neighborhood) validated
+against a schema. The product spans onboarding and document/audio intake, the
+AI generation step, a rich editor for manual refinement, versioned draft and
+published states, media management, and subscription billing — with LLM token
+usage tracked per artifact for cost control.
+
+## Role
+
+Full-stack engineer on the platform, owning the **AI engineering** end: the
+content-generation pipeline that ingests a property's source material and emits
+structured, schema-valid section content. I built the document and audio
+parsing, the transcription step, the prompt and generation orchestration, and
+the validation that keeps AI output inside the template's contract.
+
+## Stack
+
+- **Next.js (Turborepo)** — a monorepo of focused apps (dashboard, editor,
+  onboarding) sharing one component system.
+- **NestJS + PostgreSQL + Drizzle ORM** — the modular core API and a typed,
+  tenant-scoped data model for teams, projects, properties, and artifacts.
+- **FastAPI (Python) microservice** — the AI service, isolated from the main API
+  so generation can scale and fail independently.
+- **OpenAI + Whisper** — content generation from parsed source material, and
+  transcription of uploaded voice notes into usable text.
+- **Document parsing** — PDF, DOCX, XLSX, and CSV ingestion that feeds the model
+  structured facts instead of raw files.
+- **AWS S3** — media storage with presigned uploads for images and floor plans.
+- **Stripe + Supabase** — subscription billing and JWT-based auth across the
+  multi-app frontend.
+
+## Challenges
+
+The core problem is making a language model produce content a templating system
+can trust. Free-form generation isn't enough — every section has to satisfy a
+schema, respect per-section rules, and stay consistent with the others, so the
+pipeline wraps the model in validation and orchestration rather than calling it
+blind. Coordinating a separate Python AI service with the TypeScript core,
+keeping tenant boundaries intact across several apps, and tracking token cost per
+generation were the recurring engineering challenges.
+
+## Outcomes
+
+A working AI pipeline that compresses hours of manual site authoring into a
+guided generate-then-refine flow: source material in, a structured, editable,
+publishable marketing site out — with the AI output always constrained to the
+template's contract. It is the clearest example in this portfolio of putting an
+LLM to work inside a real product, behind validation and at controlled cost.
