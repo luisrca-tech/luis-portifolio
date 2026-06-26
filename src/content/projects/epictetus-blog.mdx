@@ -1,0 +1,70 @@
+---
+title: Epictetus Blog
+blurb: A headless-CMS blog where editors publish rich, structured articles and readers get a fast, statically-rendered reading experience.
+type: Frontend
+origin: Personal
+category: Frontend
+stack:
+  - Next.js
+  - TypeScript
+  - Tailwind CSS
+  - Sanity
+  - Jotai
+  - Zod
+role: Sole designer & developer — frontend, content modeling, and CMS integration.
+links:
+  live: https://epictetus-blog-ten.vercel.app/
+  repo: https://github.com/luisrca-tech/Epictetus-Blog
+---
+
+## Overview
+
+Epictetus Blog is a personal publishing platform built around a clean split
+between content and presentation. Articles live in a headless CMS and are
+rendered through a fast, statically-generated Next.js frontend, so writing stays
+effortless while readers get near-instant page loads. It is the one project in
+this portfolio with public source — a window into how I structure a real
+codebase end to end.
+
+## Scope
+
+A complete reading and authoring experience: a content schema for posts (title,
+body, cover image, metadata), structured rich-text rendering, an article index,
+individual post pages, and a typed data layer between the CMS and the UI. The
+frontend is responsible for layout, typography, image handling, and routing;
+the CMS owns the editorial workflow.
+
+## Role
+
+Sole designer and developer. I modeled the content schema, wired the CMS to the
+frontend, built the component library and page templates, and handled the
+deployment pipeline — every decision from data shape to pixel was mine.
+
+## Stack
+
+- **Next.js + TypeScript** — statically-rendered pages with a fully typed
+  codebase.
+- **Sanity** — headless CMS owning the editorial workflow and structured
+  content, queried at build time.
+- **Portable Text** — structured rich-text rendered into React components rather
+  than raw HTML, keeping articles consistent and safe.
+- **Tailwind CSS** — utility-driven styling and a readable typographic scale.
+- **Jotai** — lightweight, primitive client state where interactivity is needed.
+- **Zod** — schema validation at the data boundary so malformed content surfaces
+  early.
+
+## Challenges
+
+The core challenge was keeping the CMS and the frontend decoupled without losing
+type safety: content authored in Sanity has to arrive in the UI as well-typed,
+validated data. Mapping Portable Text into a component system — instead of
+dumping HTML — meant every block type renders predictably and stays styleable.
+Balancing static generation with editorial freshness drove the rendering
+strategy.
+
+## Outcomes
+
+A live, maintainable blog where publishing a new article is a pure content
+action — no code changes — and pages stay fast because they are rendered ahead
+of time. The codebase is public as a representative sample of how I model data,
+structure a component system, and integrate a headless CMS in production.

@@ -1,0 +1,57 @@
+---
+/*
+  Project index card. Reads frontmatter only (never the MDX body) and links to
+  the detail page. The same card is reused on the Home featured strip later.
+*/
+import type { CollectionEntry } from "astro:content";
+import FallbackImage from "./FallbackImage.astro";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const { title, blurb, stack, origin, type, image } = project.data;
+const href = `/projects/${project.id}`;
+---
+
+<a
+  href={href}
+  class="group flex flex-col border border-border bg-surface transition-colors hover:border-accent"
+>
+  {
+    image ? (
+      <img src={image} alt={title} class="aspect-[16/9] w-full object-cover" />
+    ) : (
+      <FallbackImage title={title} stack={stack} />
+    )
+  }
+
+  <div class="flex flex-1 flex-col gap-3 p-5">
+    <div class="flex items-center justify-between gap-2 font-mono text-xs">
+      <span class="text-accent">{type}</span>
+      <span
+        class:list={[
+          "border px-2 py-0.5",
+          origin === "Company"
+            ? "border-border text-muted"
+            : "border-accent/40 text-accent",
+        ]}>{origin}</span
+      >
+    </div>
+
+    <h3 class="font-mono text-lg font-semibold text-fg group-hover:text-accent">
+      {title}
+    </h3>
+
+    <p class="prose-readable flex-1 text-sm text-muted">{blurb}</p>
+
+    <ul class="flex flex-wrap gap-1.5 font-mono text-[10px] text-muted">
+      {
+        stack.map((tech) => (
+          <li class="border border-border px-2 py-0.5">{tech}</li>
+        ))
+      }
+    </ul>
+  </div>
+</a>

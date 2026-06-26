@@ -41,12 +41,12 @@ Turn the bare Astro scaffold into a deployable, themed shell. Wire the core inte
 
 ### Acceptance criteria
 
-- [ ] Tailwind v4, React, and Motion are installed and configured in `astro.config`; a trivial React island renders on the page.
-- [ ] Terminal design tokens (background `~#0C0C0C`, monospace stack, accent `#00FF9C` defined as a single swappable token) are centralized and consumed by the Layout.
-- [ ] Base `Layout` renders shared nav + footer; the default Welcome scaffold is removed.
-- [ ] UI strings render from a typed `en` dictionary (not hardcoded in markup); a `pt` slot exists but is unused. English serves at root; `/pt/` routing is reserved.
-- [ ] A global `prefers-reduced-motion` rule disables/reduces motion; verified by toggling the OS setting.
-- [ ] The site builds and is deployed to Vercel with a working live URL.
+- [x] Tailwind v4, React, and Motion are installed and configured in `astro.config`; a trivial React island renders on the page.
+- [x] Terminal design tokens (background `~#0C0C0C`, monospace stack, accent `#00FF9C` defined as a single swappable token) are centralized and consumed by the Layout.
+- [x] Base `Layout` renders shared nav + footer; the default Welcome scaffold is removed.
+- [x] UI strings render from a typed `en` dictionary (not hardcoded in markup); a `pt` slot exists but is unused. English serves at root; `/pt/` routing is reserved.
+- [x] A global `prefers-reduced-motion` rule disables/reduces motion; verified by toggling the OS setting.
+- [x] The site builds and is deployed to Vercel with a working live URL.
 
 ---
 
@@ -60,12 +60,12 @@ The core content tracer: define the typed Zod content collection and prove the f
 
 ### Acceptance criteria
 
-- [ ] A Zod-typed content collection enforces required fields (`title`, `blurb`, `type`, `origin`, `category`, `stack`, `role`); omitting any required field fails the build.
-- [ ] Adding a project requires creating **one MDX file** and nothing else.
-- [ ] `/projects` renders Epictetus Blog as a card from frontmatter (title, blurb, stack, badges).
-- [ ] `/projects/epictetus-blog` renders the detail page using the fixed template (Overview · Scope · Role · Stack · Challenges · Outcomes) from the MDX body.
-- [ ] The detail page shows technologies/stack and the "View Code" repo link (Epictetus is the one project where `links.repo` is set).
-- [ ] A project with no `image` renders the branded fallback component (not a broken/empty image), and it looks polished.
+- [x] A Zod-typed content collection enforces required fields (`title`, `blurb`, `type`, `origin`, `category`, `stack`, `role`); omitting any required field fails the build.
+- [x] Adding a project requires creating **one MDX file** and nothing else.
+- [x] `/projects` renders Epictetus Blog as a card from frontmatter (title, blurb, stack, badges).
+- [x] `/projects/epictetus-blog` renders the detail page using the fixed template (Overview · Scope · Role · Stack · Challenges · Outcomes) from the MDX body.
+- [x] The detail page shows technologies/stack and the "View Code" repo link (Epictetus is the one project where `links.repo` is set).
+- [x] A project with no `image` renders the branded fallback component (not a broken/empty image), and it looks polished.
 
 ---
 

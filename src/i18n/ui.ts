@@ -21,6 +21,14 @@ export interface UIStrings {
   cta: {
     talk: string;
   };
+  projects: {
+    title: string;
+    intro: string;
+    viewCode: string;
+    viewLive: string;
+    comingSoon: string;
+    back: string;
+  };
   footer: {
     builtWith: string;
     rights: string;
@@ -37,6 +45,14 @@ const en: UIStrings = {
   },
   cta: {
     talk: "open to roles & projects — let's talk",
+  },
+  projects: {
+    title: "projects",
+    intro: "Selected work — a representative slice, not an exhaustive list.",
+    viewCode: "View Code",
+    viewLive: "View Live",
+    comingSoon: "Coming soon",
+    back: "back to projects",
   },
   footer: {
     builtWith: "Built with Astro, React & Tailwind",
