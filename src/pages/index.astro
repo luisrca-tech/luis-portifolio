@@ -4,6 +4,8 @@ import HeroTerminal from "../components/HeroTerminal.tsx";
 import Hero3D from "../components/Hero3D.tsx";
 import IconCloud from "../components/IconCloud.tsx";
 import ProjectCard from "../components/ProjectCard.astro";
+import ContactForm from "../components/ContactForm.tsx";
+import ContactChannels from "../components/ContactChannels.tsx";
 import { useStrings } from "../i18n/ui";
 import { getCollection } from "astro:content";
 
@@ -116,17 +118,24 @@ const skillIcons = [
       </div>
     </section>
 
-    <section id="contact" class="flex scroll-mt-24 flex-col gap-4">
-      <h2 class="font-mono text-2xl font-semibold tracking-tight">
-        <span class="text-accent">~/</span>{t.home.contact.heading}
-      </h2>
-      <p class="prose-readable max-w-xl text-muted">{t.home.contact.lead}</p>
-      <a
-        href={`mailto:${t.home.contact.email}`}
-        class="self-start border border-accent px-4 py-2 font-mono text-sm text-accent transition-colors hover:bg-accent hover:text-base"
-      >
-        {t.home.contact.email} →
-      </a>
+    <section id="contact" class="flex scroll-mt-24 flex-col gap-6">
+      <div class="flex flex-col gap-2">
+        <h2 class="font-mono text-2xl font-semibold tracking-tight">
+          <span class="text-accent">~/</span>{t.home.contact.heading}
+        </h2>
+        <p class="prose-readable max-w-xl text-muted">{t.home.contact.lead}</p>
+      </div>
+
+      <ContactForm client:visible strings={t.home.contact.form} />
+
+      <ContactChannels
+        client:visible
+        email={t.home.contact.email}
+        copyLabel={t.home.contact.copyEmail}
+        copiedLabel={t.home.contact.copied}
+        linkedinUrl={t.socials.linkedin}
+        githubUrl={t.socials.github}
+      />
     </section>
   </div>
 </Layout>

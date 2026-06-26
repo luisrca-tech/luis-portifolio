@@ -18,6 +18,20 @@ const year = new Date().getFullYear();
       <span class="text-accent">$</span>
       {t.footer.builtWith}
     </p>
-    <p>© {year} {t.brand}. {t.footer.rights}</p>
+    <div class="flex items-center gap-4">
+      <a
+        href={t.socials.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="transition-colors hover:text-accent">LinkedIn ↗</a
+      >
+      <a
+        href={t.socials.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="transition-colors hover:text-accent">GitHub ↗</a
+      >
+      <span>© {year} {t.brand}. {t.footer.rights}</span>
+    </div>
   </div>
 </footer>

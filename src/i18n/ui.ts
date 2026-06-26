@@ -45,7 +45,29 @@ export interface UIStrings {
       heading: string;
       lead: string;
       email: string;
+      copyEmail: string;
+      copied: string;
+      form: {
+        name: string;
+        namePlaceholder: string;
+        email: string;
+        emailPlaceholder: string;
+        company: string;
+        companyPlaceholder: string;
+        type: string;
+        typeOptions: { value: "Role" | "Project" | "Other"; label: string }[];
+        details: string;
+        detailsPlaceholder: Record<"Role" | "Project" | "Other", string>;
+        submit: string;
+        sending: string;
+        success: string;
+        error: string;
+      };
     };
+  };
+  socials: {
+    linkedin: string;
+    github: string;
   };
   projects: {
     title: string;
@@ -104,9 +126,39 @@ const en: UIStrings = {
     },
     contact: {
       heading: "contact",
-      lead: "Open to full-time, contract, and freelance roles. The fastest way to reach me is email — a contact form and social links land here next.",
+      lead: "Open to full-time, contract, and freelance work. Tell me about a role or a project below — or reach me directly through any channel.",
       email: "luisrochacruzalves@gmail.com",
+      copyEmail: "Copy email",
+      copied: "Copied!",
+      form: {
+        name: "Name",
+        namePlaceholder: "Jane Doe",
+        email: "Email",
+        emailPlaceholder: "jane@company.com",
+        company: "Company / Organization",
+        companyPlaceholder: "Acme Inc (optional)",
+        type: "What's this about?",
+        typeOptions: [
+          { value: "Role", label: "A role" },
+          { value: "Project", label: "A project" },
+          { value: "Other", label: "Something else" },
+        ],
+        details: "Details",
+        detailsPlaceholder: {
+          Role: "Tell me about the role — team, stack, seniority, location / remote, and what you're hiring for.",
+          Project: "Tell me about the project — goals, scope, rough timeline, and budget range if you have one.",
+          Other: "What's on your mind?",
+        },
+        submit: "Send message",
+        sending: "Sending…",
+        success: "Thanks — your message is on its way. I'll reply by email soon.",
+        error: "Something went wrong sending your message. Please email me directly.",
+      },
     },
+  },
+  socials: {
+    linkedin: "https://www.linkedin.com/in/luisfelipedarocha/",
+    github: "https://github.com/luisrca-tech",
   },
   projects: {
     title: "projects",
