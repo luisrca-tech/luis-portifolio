@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+/*
+  Terminal / engineer design system.
+
+  Single source of truth for the theme tokens. The neon-green accent is one
+  swappable token (`--color-accent`): change it here and the whole site follows.
+  "Terminal-flavored, not terminal-trapped" — nav, labels and hero lean into the
+  terminal look, but body copy stays highly readable.
+*/
+@theme {
+  /* Surfaces — dark base ~#0C0C0C */
+  --color-base: #0c0c0c;
+  --color-surface: #121212;
+  --color-elevated: #181818;
+  --color-border: #262626;
+
+  /* Text */
+  --color-fg: #e6e6e6;
+  --color-muted: #8a8a8a;
+
+  /* Accent — the swappable neon-green token */
+  --color-accent: #00ff9c;
+  --color-accent-dim: #0bbf78;
+
+  /* Typography — monospace-forward */
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular,
+    "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    background-color: var(--color-base);
+    color: var(--color-fg);
+    font-family: var(--font-mono);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    /* Grid/scanline motif: a faint engineering grid over the dark base. */
+    background-color: var(--color-base);
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-border) 45%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 45%, transparent) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-attachment: fixed;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Readable body copy keeps a sans stack so recruiters aren't reading prose
+     in monospace. Opt in with `.prose-readable`. */
+  .prose-readable {
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+}
+
+/*
+  Motion baseline. Every later animation inherits this: when the visitor asks
+  for reduced motion, transitions and animations are effectively disabled.
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

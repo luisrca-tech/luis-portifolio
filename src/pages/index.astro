@@ -1,11 +1,31 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import TerminalPrompt from "../components/TerminalPrompt.tsx";
+import { useStrings } from "../i18n/ui";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const t = useStrings("en");
 ---
 
 <Layout>
-	<Welcome />
+  <section class="flex flex-col gap-6 py-16">
+    <TerminalPrompt client:load command="whoami" />
+
+    <h1 class="font-mono text-4xl font-semibold tracking-tight sm:text-5xl">
+      {t.brand}
+      <span class="block text-accent">{t.role}</span>
+    </h1>
+
+    <p class="prose-readable max-w-xl text-muted">
+      {t.cta.talk}
+    </p>
+
+    <div>
+      <a
+        href="/#contact"
+        class="inline-block border border-accent px-4 py-2 font-mono text-sm text-accent transition-colors hover:bg-accent hover:text-base"
+      >
+        {t.nav.contact} →
+      </a>
+    </div>
+  </section>
 </Layout>
