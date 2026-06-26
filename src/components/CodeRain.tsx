@@ -12,6 +12,11 @@ import { useEffect, useState, type ComponentType } from "react";
  * there is no rain.
  */
 
+// Push the rain into the background so it never competes with the centered
+// content: globally dim the canvas and softly defocus the glyphs. Tune here.
+const RAIN_OPACITY = 0.7;
+const RAIN_BLUR_PX = 1.25;
+
 function isCapable(): boolean {
   if (typeof window === "undefined") return false;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -47,6 +52,8 @@ export default function CodeRain() {
         inset: 0,
         zIndex: 0,
         pointerEvents: "none",
+        opacity: RAIN_OPACITY,
+        filter: `blur(${RAIN_BLUR_PX}px)`,
       }}
     >
       <Scene />
