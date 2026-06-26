@@ -18,6 +18,11 @@ const { project } = Astro.props;
 const { title, blurb } = project.data;
 ---
 
-<Layout title={`${title} — ${t.brand}`} description={blurb}>
+<Layout
+  title={`${title} — ${t.brand}`}
+  description={blurb}
+  image={project.data.image}
+  type="article"
+>
   <ProjectDetail project={project} locale="en" />
 </Layout>

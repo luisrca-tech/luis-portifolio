@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://luisrca-tech.vercel.app/sitemap-index.xml

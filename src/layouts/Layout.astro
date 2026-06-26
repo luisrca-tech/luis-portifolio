@@ -8,6 +8,9 @@ interface Props {
   title?: string;
   description?: string;
   locale?: Locale;
+  // Absolute-or-root-relative OG/Twitter image. Defaults to the branded card.
+  image?: string;
+  type?: "website" | "article";
 }
 
 const locale = (Astro.currentLocale as Locale) ?? "en";
@@ -15,7 +18,22 @@ const t = useStrings(locale);
 const {
   title = `${t.brand} — ${t.role}`,
   description = `${t.brand}, ${t.role}. ${t.cta.talk}`,
+  image = "/og/og-default.png",
+  type = "website",
 } = Astro.props;
+
+// Absolute URLs resolved against the configured `site`. hreflang maps the
+// current page to its English (root) and Portuguese (/pt/) counterparts so
+// Google serves the right language; `basePath` is the locale-neutral path.
+const path = Astro.url.pathname;
+const basePath = (locale === "pt" ? path.replace(/^\/pt/, "") : path) || "/";
+const ptPath = basePath === "/" ? "/pt/" : `/pt${basePath}`;
+const canonicalURL = new URL(path, Astro.site);
+const enURL = new URL(basePath, Astro.site);
+const ptURL = new URL(ptPath, Astro.site);
+const imageURL = new URL(image, Astro.site);
+const ogLocale = locale === "pt" ? "pt_BR" : "en_US";
+const altLocale = locale === "pt" ? "en_US" : "pt_BR";
 ---
 
 <!doctype html>
@@ -23,11 +41,42 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
+
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="theme-color" content="#0a0b0d" />
+
+    <!-- Favicons / app icons (the neon "L" on transparency) -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Language alternates -->
+    <link rel="alternate" hreflang="en" href={enURL} />
+    <link rel="alternate" hreflang="pt-BR" href={ptURL} />
+    <link rel="alternate" hreflang="x-default" href={enURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={t.brand} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={altLocale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:image:alt" content={title} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+    <meta name="twitter:image:alt" content={title} />
     <script is:inline>
       // Pre-paint guard against a flash of fully-rendered text: hide the
       // type-on headings and to-be-revealed blocks before the first paint, so

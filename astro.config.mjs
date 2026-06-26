@@ -4,10 +4,14 @@ import { defineConfig, envField } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
+  // Deployed origin. Required for absolute canonical/OG URLs and the sitemap.
+  site: 'https://luisrca-tech.vercel.app',
+
   // Static by default; the contact API route opts into on-demand rendering
   // with `export const prerender = false`. The Vercel adapter makes that route
   // a serverless function while every page stays prerendered.
@@ -35,7 +39,18 @@ export default defineConfig({
     },
   },
 
-  integrations: [react(), mdx()],
+  integrations: [
+    react(),
+    mdx(),
+    // Emits sitemap-index.xml at build with hreflang alternates between the
+    // English (root) and Portuguese (/pt/) versions of each page.
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: { en: 'en-US', pt: 'pt-BR' },
+      },
+    }),
+  ],
 
   vite: {
     plugins: [tailwindcss()]
