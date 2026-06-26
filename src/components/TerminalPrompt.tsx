@@ -21,7 +21,14 @@ export default function TerminalPrompt({ command }: TerminalPromptProps) {
 
   return (
     <p className="font-mono text-sm text-muted">
-      <span className="text-accent">luis@portfolio</span>
+      <a
+        href="https://github.com/luisrca-tech"
+        target="_blank"
+        rel="noreferrer"
+        className="text-accent hover:underline"
+      >
+        luisrca-tech
+      </a>
       <span className="text-muted">:~$ </span>
       <span className="text-fg">{command}</span>
       <span
