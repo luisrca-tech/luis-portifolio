@@ -33,6 +33,10 @@ export interface UIStrings {
       heading: string;
       body: string[];
     };
+    skills: {
+      heading: string;
+      lead: string;
+    };
     featured: {
       heading: string;
       viewAll: string;
@@ -89,6 +93,10 @@ const en: UIStrings = {
         "Full Stack / AI Engineer who builds production systems where the architecture decision is the business outcome. Promoted from Junior to Mid-Level in six months at Naranja Labs by owning end-to-end solutions for US-market clients — including the platform that runs a US studio's 3D-rendering pipeline from proposal through stage-based production to delivery and billing across 300+ projects.",
         "Independently architects complete multi-tenant SaaS products — from CRMs to real-time chat-as-a-service — built to sell, with billing, auth, and per-tenant data isolation. Pairs strong fundamentals (TDD, type-safe APIs, clean architecture) with a disciplined AI-augmented workflow that treats AI as an instrument under engineering control, not autopilot.",
       ],
+    },
+    skills: {
+      heading: "skills",
+      lead: "The stack I reach for across the stack — frontend, backend, data, infra, and AI. Drag the cloud to spin it.",
     },
     featured: {
       heading: "featured work",

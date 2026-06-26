@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import HeroTerminal from "../components/HeroTerminal.tsx";
+import Hero3D from "../components/Hero3D.tsx";
+import IconCloud from "../components/IconCloud.tsx";
 import ProjectCard from "../components/ProjectCard.astro";
 import { useStrings } from "../i18n/ui";
 import { getCollection } from "astro:content";
@@ -9,35 +11,70 @@ const t = useStrings("en");
 
 // Featured strip: a small slice of the same collection the index renders.
 const featured = (await getCollection("projects")).slice(0, 4);
+
+// Skills cloud: tech logos from the Simple Icons CDN, in brand colors. A few
+// brands are near-black (Next, Vercel, OpenAI, GitHub) and would vanish on the
+// dark base, so those are tinted to the `fg` token instead.
+const fg = "e6e6e6";
+const brand = (slug: string) => `https://cdn.simpleicons.org/${slug}`;
+const onDark = (slug: string) => `https://cdn.simpleicons.org/${slug}/${fg}`;
+const skillIcons = [
+  brand("typescript"),
+  brand("react"),
+  onDark("nextdotjs"),
+  brand("astro"),
+  brand("nodedotjs"),
+  brand("tailwindcss"),
+  brand("postgresql"),
+  brand("drizzle"),
+  brand("trpc"),
+  brand("hono"),
+  brand("zod"),
+  brand("redis"),
+  brand("stripe"),
+  brand("sanity"),
+  brand("docker"),
+  brand("git"),
+  brand("python"),
+  onDark("openai"),
+  onDark("vercel"),
+  onDark("github"),
+];
 ---
 
 <Layout>
   <div class="flex flex-col gap-24 py-12">
-    <section class="flex flex-col gap-8">
-      <HeroTerminal
-        client:load
-        name={t.brand}
-        role={t.role}
-        pitch={t.home.hero.pitch}
-        promptWhoami={t.home.hero.promptWhoami}
-        promptPitch={t.home.hero.promptPitch}
-        promptContact={t.home.hero.promptContact}
-      />
+    <section class="grid items-center gap-10 md:grid-cols-[1fr_auto]">
+      <div class="flex flex-col gap-8">
+        <HeroTerminal
+          client:load
+          name={t.brand}
+          role={t.role}
+          pitch={t.home.hero.pitch}
+          promptWhoami={t.home.hero.promptWhoami}
+          promptPitch={t.home.hero.promptPitch}
+          promptContact={t.home.hero.promptContact}
+        />
 
-      <div class="flex flex-wrap gap-3 font-mono text-sm">
-        <a
-          href="/#contact"
-          class="border border-accent px-4 py-2 text-accent transition-colors hover:bg-accent hover:text-base"
-        >
-          {t.cta.talk} →
-        </a>
-        <a
-          href="/Luis-Felipe-CV.pdf"
-          download
-          class="border border-border px-4 py-2 text-fg transition-colors hover:border-accent hover:text-accent"
-        >
-          {t.cta.downloadCv} ↓
-        </a>
+        <div class="flex flex-wrap gap-3 font-mono text-sm">
+          <a
+            href="/#contact"
+            class="border border-accent px-4 py-2 text-accent transition-colors hover:bg-accent hover:text-base"
+          >
+            {t.cta.talk} →
+          </a>
+          <a
+            href="/Luis-Felipe-CV.pdf"
+            download
+            class="border border-border px-4 py-2 text-fg transition-colors hover:border-accent hover:text-accent"
+          >
+            {t.cta.downloadCv} ↓
+          </a>
+        </div>
+      </div>
+
+      <div class="flex justify-center">
+        <Hero3D client:idle />
       </div>
     </section>
 
@@ -47,6 +84,18 @@ const featured = (await getCollection("projects")).slice(0, 4);
       </h2>
       <div class="prose-readable flex max-w-2xl flex-col gap-4 text-muted">
         {t.home.about.body.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-6">
+      <div class="flex flex-col gap-2">
+        <h2 class="font-mono text-2xl font-semibold tracking-tight">
+          <span class="text-accent">~/</span>{t.home.skills.heading}
+        </h2>
+        <p class="prose-readable max-w-xl text-muted">{t.home.skills.lead}</p>
+      </div>
+      <div class="flex justify-center sm:justify-start">
+        <IconCloud client:visible images={skillIcons} />
       </div>
     </section>
 

@@ -116,11 +116,11 @@ The two signature interactive moments, both performance-guarded. Add the MagicUI
 
 ### Acceptance criteria
 
-- [ ] An interactive skills icon cloud renders in the Home skills section and is usable on desktop.
-- [ ] The r3f 3D hero loads lazily (not in the critical path) and degrades to a static/fallback visual on low-power & mobile devices.
-- [ ] Both the skills cloud and 3D hero respect `prefers-reduced-motion`.
-- [ ] Mobile Lighthouse performance stays within the agreed budget with the 3D/animations present.
-- [ ] On a low-power/mobile device the page remains fast and usable (no heavy-animation degradation).
+- [x] An interactive skills icon cloud renders in the Home skills section and is usable on desktop.
+- [x] The r3f 3D hero loads lazily (not in the critical path) and degrades to a static/fallback visual on low-power & mobile devices.
+- [x] Both the skills cloud and 3D hero respect `prefers-reduced-motion`.
+- [x] Mobile Lighthouse performance stays within the agreed budget with the 3D/animations present.
+- [x] On a low-power/mobile device the page remains fast and usable (no heavy-animation degradation).
 
 ---
 
