@@ -1,11 +1,18 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
+import ProjectFilter from "../../components/ProjectFilter.tsx";
 import { useStrings } from "../../i18n/ui";
 import { getCollection } from "astro:content";
 
 const t = useStrings("en");
 const projects = await getCollection("projects");
+
+const filterOptions = [
+  { value: "all", label: t.projects.filter.all },
+  { value: "Systems", label: t.projects.filter.systems },
+  { value: "Frontend", label: t.projects.filter.frontend },
+] as const;
 ---
 
 <Layout title={`${t.projects.title} — ${t.brand}`}>
@@ -19,8 +26,21 @@ const projects = await getCollection("projects");
       </p>
     </header>
 
-    <div class="grid gap-6 sm:grid-cols-2">
-      {projects.map((project) => <ProjectCard project={project} />)}
+    <ProjectFilter
+      client:load
+      targetId="project-grid"
+      label={t.projects.filter.label}
+      options={filterOptions}
+    />
+
+    <div id="project-grid" data-filter="all" class="grid gap-6 sm:grid-cols-2">
+      {
+        projects.map((project) => (
+          <div data-category={project.data.category} class="contents">
+            <ProjectCard project={project} />
+          </div>
+        ))
+      }
     </div>
   </section>
 </Layout>

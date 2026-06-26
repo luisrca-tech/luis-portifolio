@@ -1,0 +1,75 @@
+---
+title: DeliveryChat
+blurb: A real-time chat-as-a-service platform — businesses embed a branded, WebSocket-powered chat widget into their site, each tenant fully isolated on its own subdomain.
+type: System
+origin: Personal
+category: Systems
+stack:
+  - Hono
+  - WebSockets
+  - PostgreSQL
+  - Drizzle ORM
+  - Better Auth
+  - Stripe
+  - React
+  - Turborepo
+role: Sole architect & developer — API, real-time engine, embeddable SDK, dashboard, and billing.
+links:
+  live: https://www.deliverychat.online/
+---
+
+## Overview
+
+DeliveryChat is chat-as-a-service: a business drops a small script onto its
+website and gets a branded, real-time chat widget backed by a full support
+dashboard. It is a multi-tenant SaaS — every customer is an isolated tenant on
+its own subdomain, with its own branding, team, and conversation history — built
+to be sold, with authentication, billing, and per-tenant data isolation in place.
+
+## Scope
+
+Three product surfaces over one backend: the **embeddable widget** that visitors
+chat through, the **admin dashboard** where a company's team answers and manages
+conversations, settings, and API keys, and the **API** that carries messages in
+real time and enforces tenant boundaries. Around them sit a marketing/registration
+site and a published JavaScript SDK that hosts can install to mount the widget.
+
+## Role
+
+Sole architect and developer across the whole monorepo — the API and data model,
+the real-time transport, the embeddable SDK, the dashboard, and the Stripe
+billing and trial flow.
+
+## Stack
+
+- **Hono + WebSockets** — a lightweight API that upgrades to WebSocket for
+  real-time delivery; visitors exchange a signed token before the upgrade so a
+  connection can never cross tenant boundaries.
+- **PostgreSQL + Drizzle ORM** — the typed data layer, with every record scoped
+  to its tenant (`applicationId`) for isolation.
+- **Better Auth** — authentication and sessions for dashboard users.
+- **Stripe** — subscription billing and trial management driven by webhooks.
+- **React + TanStack Router/Query** — the admin dashboard and the widget UI.
+- **Embeddable SDK** — a published package with a custom connection engine that
+  manages the WebSocket lifecycle: reconnection with exponential backoff,
+  heartbeat keepalive, and typed message routing.
+- **Turborepo + Bun** — a monorepo orchestrating the API, dashboard, widget,
+  marketing site, SDK, and shared type/UI packages.
+
+## Challenges
+
+The hard part is real-time delivery that stays correct under multi-tenancy. The
+connection engine has to survive flaky networks — reconnecting cleanly, keeping
+connections alive with ping/pong, and never delivering a message to the wrong
+tenant. A signed-token handshake gates every WebSocket upgrade, and rate limiting
+protects the socket layer. The widget ships in two forms — a framework build and
+a standalone bundle injected by a one-line script — so it embeds anywhere without
+a host build step.
+
+## Outcomes
+
+A live, production-shaped platform: a business can register, embed the widget,
+and run real-time support from an isolated dashboard, with billing and trials
+handled end to end. It is the clearest example in this portfolio of owning a
+full SaaS — real-time transport, multi-tenant data, an embeddable SDK, and
+payments — as a single engineer.

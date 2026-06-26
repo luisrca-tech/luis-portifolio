@@ -50,6 +50,12 @@ export interface UIStrings {
     viewLive: string;
     comingSoon: string;
     back: string;
+    filter: {
+      label: string;
+      all: string;
+      systems: string;
+      frontend: string;
+    };
   };
   footer: {
     builtWith: string;
@@ -101,6 +107,12 @@ const en: UIStrings = {
     viewLive: "View Live",
     comingSoon: "Coming soon",
     back: "back to projects",
+    filter: {
+      label: "filter",
+      all: "all",
+      systems: "systems",
+      frontend: "frontend",
+    },
   },
   footer: {
     builtWith: "Built with Astro, React & Tailwind",
