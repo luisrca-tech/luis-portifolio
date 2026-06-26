@@ -5,6 +5,7 @@ import IconCloud from "../components/IconCloud.tsx";
 import ProjectCard from "../components/ProjectCard.astro";
 import ContactForm from "../components/ContactForm.tsx";
 import ContactChannels from "../components/ContactChannels.tsx";
+import Avatar3D from "../components/Avatar3D.tsx";
 import { useStrings } from "../i18n/ui";
 import { getCollection } from "astro:content";
 
@@ -54,7 +55,8 @@ const skillIcons = [
 ---
 
 <Layout>
-  <div class="flex flex-col gap-16 py-12">
+  <div class="flex flex-col gap-16">
+    <div class="flex flex-col gap-8">
     <section class="grid items-center gap-10 md:grid-cols-[1fr_auto]">
       <div class="flex flex-col gap-8">
         <HeroTerminal
@@ -87,14 +89,21 @@ const skillIcons = [
       </div>
     </section>
 
-    <section class="flex flex-col gap-4">
-      <h2 class="font-mono text-2xl font-semibold tracking-tight">
-        <span class="text-accent">~/</span>{t.home.about.heading}
-      </h2>
-      <div class="prose-readable flex max-w-2xl flex-col gap-4 text-muted">
-        {t.home.about.body.map((paragraph) => <p>{paragraph}</p>)}
+    <section class="grid items-center gap-10 md:grid-cols-[1fr_32rem]">
+      <div class="flex flex-col gap-4">
+        <h2 class="font-mono text-2xl font-semibold tracking-tight">
+          <span class="text-accent">~/</span>{t.home.about.heading}
+        </h2>
+        <div class="prose-readable flex max-w-2xl flex-col gap-4 text-muted">
+          {t.home.about.body.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+      </div>
+
+      <div class="flex justify-center md:justify-end">
+        <Avatar3D client:only="react" />
       </div>
     </section>
+    </div>
 
     <section class="flex flex-col gap-6">
       <div class="flex items-baseline justify-between gap-4">
