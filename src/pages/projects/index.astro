@@ -1,0 +1,26 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { useStrings } from "../../i18n/ui";
+import { getCollection } from "astro:content";
+
+const t = useStrings("en");
+const projects = await getCollection("projects");
+---
+
+<Layout title={`${t.projects.title} — ${t.brand}`}>
+  <section class="flex flex-col gap-8 py-8">
+    <header class="flex flex-col gap-2">
+      <h1 class="font-mono text-3xl font-semibold tracking-tight">
+        <span class="text-accent">~/</span>{t.projects.title}
+      </h1>
+      <p class="prose-readable max-w-xl text-sm text-muted">
+        {t.projects.intro}
+      </p>
+    </header>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+</Layout>

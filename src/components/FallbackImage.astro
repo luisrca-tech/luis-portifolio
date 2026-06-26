@@ -1,0 +1,68 @@
+---
+/*
+  Branded fallback visual for projects without a usable OG image.
+
+  Renders a gradient panel with the project's initials and a few stack chips —
+  used wherever `image` is absent (and always for anonymized company systems,
+  which never show real screenshots). Deliberately polished so a missing
+  screenshot never reads as broken.
+*/
+interface Props {
+  title: string;
+  stack: string[];
+  /** Larger header treatment on detail pages, compact on cards. */
+  variant?: "card" | "detail";
+  class?: string;
+}
+
+const { title, stack, variant = "card", class: className = "" } = Astro.props;
+
+const initials = title
+  .split(/\s+/)
+  .map((word) => word[0])
+  .join("")
+  .slice(0, 3)
+  .toUpperCase();
+
+const chips = stack.slice(0, 4);
+const isDetail = variant === "detail";
+---
+
+<div
+  class:list={[
+    "relative flex w-full flex-col justify-between overflow-hidden border border-border bg-elevated",
+    isDetail ? "aspect-[16/6] p-6" : "aspect-[16/9] p-4",
+    className,
+  ]}
+>
+  {/* Accent gradient wash + faint grid echo of the site motif. */}
+  <div
+    class="pointer-events-none absolute inset-0 opacity-60"
+    style="background:radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent 55%);"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute inset-0 opacity-30"
+    style="background-image:linear-gradient(to right, color-mix(in srgb, var(--color-border) 60%, transparent) 1px, transparent 1px),linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 60%, transparent) 1px, transparent 1px);background-size:24px 24px;"
+  >
+  </div>
+
+  <span class="relative font-mono text-xs text-muted">~/ {title}</span>
+
+  <span
+    class:list={[
+      "relative font-mono font-semibold leading-none text-accent",
+      isDetail ? "text-6xl" : "text-4xl",
+    ]}>{initials}</span
+  >
+
+  <div class="relative flex flex-wrap gap-1.5">
+    {
+      chips.map((tech) => (
+        <span class="border border-border bg-base/60 px-2 py-0.5 font-mono text-[10px] text-muted">
+          {tech}
+        </span>
+      ))
+    }
+  </div>
+</div>
