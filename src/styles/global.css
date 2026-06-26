@@ -67,6 +67,29 @@
   }
 }
 
+/* Terminal-boot cursor: a blinking block that trails the typed text. The
+   reduced-motion baseline below freezes the blink to a steady block. */
+.hero-cursor {
+  display: inline-block;
+  width: 0.55ch;
+  height: 1em;
+  margin-left: 0.1ch;
+  vertical-align: text-bottom;
+  background-color: var(--color-accent);
+  animation: hero-cursor-blink 1.06s steps(1) infinite;
+}
+
+@keyframes hero-cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
 /*
   Motion baseline. Every later animation inherits this: when the visitor asks
   for reduced motion, transitions and animations are effectively disabled.

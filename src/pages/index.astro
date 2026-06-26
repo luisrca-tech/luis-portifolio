@@ -1,31 +1,83 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import TerminalPrompt from "../components/TerminalPrompt.tsx";
+import HeroTerminal from "../components/HeroTerminal.tsx";
+import ProjectCard from "../components/ProjectCard.astro";
 import { useStrings } from "../i18n/ui";
+import { getCollection } from "astro:content";
 
 const t = useStrings("en");
+
+// Featured strip: a small slice of the same collection the index renders.
+const featured = (await getCollection("projects")).slice(0, 4);
 ---
 
 <Layout>
-  <section class="flex flex-col gap-6 py-16">
-    <TerminalPrompt client:load command="whoami" />
+  <div class="flex flex-col gap-24 py-12">
+    <section class="flex flex-col gap-8">
+      <HeroTerminal
+        client:load
+        name={t.brand}
+        role={t.role}
+        pitch={t.home.hero.pitch}
+        promptWhoami={t.home.hero.promptWhoami}
+        promptPitch={t.home.hero.promptPitch}
+        promptContact={t.home.hero.promptContact}
+      />
 
-    <h1 class="font-mono text-4xl font-semibold tracking-tight sm:text-5xl">
-      {t.brand}
-      <span class="block text-accent">{t.role}</span>
-    </h1>
+      <div class="flex flex-wrap gap-3 font-mono text-sm">
+        <a
+          href="/#contact"
+          class="border border-accent px-4 py-2 text-accent transition-colors hover:bg-accent hover:text-base"
+        >
+          {t.cta.talk} →
+        </a>
+        <a
+          href="/Luis-Felipe-CV.pdf"
+          download
+          class="border border-border px-4 py-2 text-fg transition-colors hover:border-accent hover:text-accent"
+        >
+          {t.cta.downloadCv} ↓
+        </a>
+      </div>
+    </section>
 
-    <p class="prose-readable max-w-xl text-muted">
-      {t.cta.talk}
-    </p>
+    <section class="flex flex-col gap-4">
+      <h2 class="font-mono text-2xl font-semibold tracking-tight">
+        <span class="text-accent">~/</span>{t.home.about.heading}
+      </h2>
+      <div class="prose-readable flex max-w-2xl flex-col gap-4 text-muted">
+        {t.home.about.body.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </section>
 
-    <div>
+    <section class="flex flex-col gap-6">
+      <div class="flex items-baseline justify-between gap-4">
+        <h2 class="font-mono text-2xl font-semibold tracking-tight">
+          <span class="text-accent">~/</span>{t.home.featured.heading}
+        </h2>
+        <a
+          href="/projects"
+          class="font-mono text-sm text-muted transition-colors hover:text-accent"
+        >
+          {t.home.featured.viewAll} →
+        </a>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2">
+        {featured.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </section>
+
+    <section id="contact" class="flex scroll-mt-24 flex-col gap-4">
+      <h2 class="font-mono text-2xl font-semibold tracking-tight">
+        <span class="text-accent">~/</span>{t.home.contact.heading}
+      </h2>
+      <p class="prose-readable max-w-xl text-muted">{t.home.contact.lead}</p>
       <a
-        href="/#contact"
-        class="inline-block border border-accent px-4 py-2 font-mono text-sm text-accent transition-colors hover:bg-accent hover:text-base"
+        href={`mailto:${t.home.contact.email}`}
+        class="self-start border border-accent px-4 py-2 font-mono text-sm text-accent transition-colors hover:bg-accent hover:text-base"
       >
-        {t.nav.contact} →
+        {t.home.contact.email} →
       </a>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>
