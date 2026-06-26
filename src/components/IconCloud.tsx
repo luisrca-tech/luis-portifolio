@@ -5,8 +5,7 @@ import { useEffect, useRef, useState } from "react";
  *
  * Trimmed to the `images` path only — we feed it tech-logo URLs, so the
  * original React-node/`renderToString` branch is dropped (keeps `react-dom/server`
- * out of the bundle). Added: a `prefers-reduced-motion` guard that freezes the
- * idle auto-spin while leaving drag-to-rotate intact.
+ * out of the bundle).
  *
  * Icons live on a Fibonacci sphere; the canvas projects + rotates them each
  * frame. Dragging spins the cloud; clicking an icon eases it to the front.
@@ -21,13 +20,22 @@ interface Icon {
 
 interface IconCloudProps {
   images: string[];
+  size?: number;
 }
+
+const BASE_SIZE = 340;
 
 function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
 
-export default function IconCloud({ images }: IconCloudProps) {
+export default function IconCloud({ images, size = BASE_SIZE }: IconCloudProps) {
+  const scale = size / BASE_SIZE;
+  const sphereRadius = 100 * scale;
+  const iconSize = 40 * scale;
+  const iconHalf = iconSize / 2;
+  const depthOffset = 200 * scale;
+  const depthRange = 300 * scale;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [iconPositions, setIconPositions] = useState<Icon[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -45,13 +53,6 @@ export default function IconCloud({ images }: IconCloudProps) {
   const rotationRef = useRef({ x: 0, y: 0 });
   const iconCanvasesRef = useRef<HTMLCanvasElement[]>([]);
   const imagesLoadedRef = useRef<boolean[]>([]);
-  const reduceMotionRef = useRef(false);
-
-  useEffect(() => {
-    reduceMotionRef.current = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-  }, []);
 
   // Rasterize each image into a small offscreen canvas once.
   useEffect(() => {
@@ -59,8 +60,8 @@ export default function IconCloud({ images }: IconCloudProps) {
 
     iconCanvasesRef.current = images.map((src, index) => {
       const offscreen = document.createElement("canvas");
-      offscreen.width = 40;
-      offscreen.height = 40;
+      offscreen.width = iconSize;
+      offscreen.height = iconSize;
       const offCtx = offscreen.getContext("2d");
       if (!offCtx) return offscreen;
 
@@ -68,13 +69,13 @@ export default function IconCloud({ images }: IconCloudProps) {
       img.crossOrigin = "anonymous";
       img.src = src;
       img.onload = () => {
-        offCtx.clearRect(0, 0, 40, 40);
-        offCtx.drawImage(img, 0, 0, 40, 40);
+        offCtx.clearRect(0, 0, iconSize, iconSize);
+        offCtx.drawImage(img, 0, 0, iconSize, iconSize);
         imagesLoadedRef.current[index] = true;
       };
       return offscreen;
     });
-  }, [images]);
+  }, [images, iconSize]);
 
   // Lay the icons out on a Fibonacci sphere.
   useEffect(() => {
@@ -88,14 +89,14 @@ export default function IconCloud({ images }: IconCloudProps) {
       const r = Math.sqrt(1 - y * y);
       const phi = i * increment;
       newIcons.push({
-        x: Math.cos(phi) * r * 100,
-        y: y * 100,
-        z: Math.sin(phi) * r * 100,
+        x: Math.cos(phi) * r * sphereRadius,
+        y: y * sphereRadius,
+        z: Math.sin(phi) * r * sphereRadius,
         id: i,
       });
     }
     setIconPositions(newIcons);
-  }, [images]);
+  }, [images, sphereRadius]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const rect = canvasRef.current?.getBoundingClientRect();
@@ -115,8 +116,8 @@ export default function IconCloud({ images }: IconCloudProps) {
 
       const screenX = canvasRef.current!.width / 2 + rotatedX;
       const screenY = canvasRef.current!.height / 2 + rotatedY;
-      const scale = (rotatedZ + 200) / 300;
-      const radius = 20 * scale;
+      const scale = (rotatedZ + depthOffset) / depthRange;
+      const radius = iconHalf * scale;
       const dx = x - screenX;
       const dy = y - screenY;
 
@@ -192,8 +193,9 @@ export default function IconCloud({ images }: IconCloudProps) {
             (targetRotation.y - targetRotation.startY) * eased,
         };
         if (progress >= 1) setTargetRotation(null);
-      } else if (!isDragging && !reduceMotionRef.current) {
-        // Idle auto-spin — suppressed when the visitor asked for reduced motion.
+      } else if (!isDragging) {
+        // Idle auto-spin — driven by the cursor's offset from center. Because
+        // mousePos starts at {0,0}, the cloud rotates on its own until hovered.
         rotationRef.current = {
           x: rotationRef.current.x + (dy / canvas.height) * speed,
           y: rotationRef.current.y + (dx / canvas.width) * speed,
@@ -210,15 +212,18 @@ export default function IconCloud({ images }: IconCloudProps) {
         const rotatedZ = icon.x * sinY + icon.z * cosY;
         const rotatedY = icon.y * cosX + rotatedZ * sinX;
 
-        const scale = (rotatedZ + 200) / 300;
-        const opacity = Math.max(0.2, Math.min(1, (rotatedZ + 150) / 200));
+        const scale = (rotatedZ + depthOffset) / depthRange;
+        const opacity = Math.max(
+          0.2,
+          Math.min(1, (rotatedZ + 150 * scale) / (200 * scale)),
+        );
 
         ctx.save();
         ctx.translate(centerX + rotatedX, centerY + rotatedY);
         ctx.scale(scale, scale);
         ctx.globalAlpha = opacity;
         if (iconCanvasesRef.current[index] && imagesLoadedRef.current[index]) {
-          ctx.drawImage(iconCanvasesRef.current[index], -20, -20, 40, 40);
+          ctx.drawImage(iconCanvasesRef.current[index], -iconHalf, -iconHalf, iconSize, iconSize);
         }
         ctx.restore();
       });
@@ -232,13 +237,13 @@ export default function IconCloud({ images }: IconCloudProps) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [images, iconPositions, isDragging, mousePos, targetRotation]);
+  }, [images, iconPositions, isDragging, mousePos, targetRotation, depthOffset, depthRange, iconHalf, iconSize]);
 
   return (
     <canvas
       ref={canvasRef}
-      width={340}
-      height={340}
+      width={size}
+      height={size}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}

@@ -3,35 +3,29 @@ import { useEffect, useState } from "react";
 interface HeroTerminalProps {
   name: string;
   role: string;
-  pitch: string;
   promptWhoami: string;
-  promptPitch: string;
   promptContact: string;
 }
 
 /**
- * Terminal-boot hero. Types the name, role, and pitch on as the "output" of a
- * short command sequence — the site's signature boot/type-on motion.
+ * Terminal-boot hero. Types the name and role on as the "output" of a short
+ * command sequence — the site's signature boot/type-on motion.
  *
- * Robustness: every segment is rendered fully on the server (so the name, role
- * and pitch are real HTML for SEO and no-JS), then re-typed from empty after
+ * Robustness: every segment is rendered fully on the server (so the name and
+ * role are real HTML for SEO and no-JS), then re-typed from empty after
  * hydration. When the visitor asks for reduced motion, it stays fully revealed
  * and only the cursor is static.
  */
 export default function HeroTerminal({
   name,
   role,
-  pitch,
   promptWhoami,
-  promptPitch,
   promptContact,
 }: HeroTerminalProps) {
   const segments = [
     { kind: "cmd", text: promptWhoami },
     { kind: "name", text: name },
     { kind: "role", text: role },
-    { kind: "cmd", text: promptPitch },
-    { kind: "pitch", text: pitch },
     { kind: "cmd", text: promptContact },
   ] as const;
 
@@ -113,27 +107,11 @@ export default function HeroTerminal({
         )}
       </h1>
 
-      {/* $ cat pitch.txt */}
+      {/* $ ./open-to-work (trailing prompt, holds the resting cursor) */}
       {visible(3) && (
         <p className="text-sm text-muted">
           <span className="text-accent">$</span> {text(3)}
           {cursorSeg === 3 && <Cursor />}
-        </p>
-      )}
-
-      {/* pitch output — sans for readability */}
-      {visible(4) && (
-        <p className="prose-readable max-w-xl text-muted">
-          {text(4)}
-          {cursorSeg === 4 && <Cursor />}
-        </p>
-      )}
-
-      {/* $ ./open-to-work (trailing prompt, holds the resting cursor) */}
-      {visible(5) && (
-        <p className="text-sm text-muted">
-          <span className="text-accent">$</span> {text(5)}
-          {cursorSeg === 5 && <Cursor />}
         </p>
       )}
     </div>

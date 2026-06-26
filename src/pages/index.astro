@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import HeroTerminal from "../components/HeroTerminal.tsx";
-import Hero3D from "../components/Hero3D.tsx";
 import IconCloud from "../components/IconCloud.tsx";
 import ProjectCard from "../components/ProjectCard.astro";
 import ContactForm from "../components/ContactForm.tsx";
@@ -11,8 +10,18 @@ import { getCollection } from "astro:content";
 
 const t = useStrings("en");
 
-// Featured strip: a small slice of the same collection the index renders.
-const featured = (await getCollection("projects")).slice(0, 4);
+// Featured strip: explicit order for the home grid (2×2).
+const featuredSlugs = [
+  "deliverychat",
+  "ai-site-builder",
+  "63-west",
+  "render-delivery-platform",
+] as const;
+
+const allProjects = await getCollection("projects");
+const featured = featuredSlugs
+  .map((slug) => allProjects.find((p) => p.id === slug))
+  .filter((p): p is (typeof allProjects)[number] => p != null);
 
 // Skills cloud: tech logos from the Simple Icons CDN, in brand colors. A few
 // brands are near-black (Next, Vercel, OpenAI, GitHub) and would vanish on the
@@ -45,16 +54,14 @@ const skillIcons = [
 ---
 
 <Layout>
-  <div class="flex flex-col gap-24 py-12">
+  <div class="flex flex-col gap-16 py-12">
     <section class="grid items-center gap-10 md:grid-cols-[1fr_auto]">
       <div class="flex flex-col gap-8">
         <HeroTerminal
           client:load
           name={t.brand}
           role={t.role}
-          pitch={t.home.hero.pitch}
           promptWhoami={t.home.hero.promptWhoami}
-          promptPitch={t.home.hero.promptPitch}
           promptContact={t.home.hero.promptContact}
         />
 
@@ -76,7 +83,7 @@ const skillIcons = [
       </div>
 
       <div class="flex justify-center">
-        <Hero3D client:idle />
+        <IconCloud client:idle images={skillIcons} size={440} />
       </div>
     </section>
 
@@ -86,18 +93,6 @@ const skillIcons = [
       </h2>
       <div class="prose-readable flex max-w-2xl flex-col gap-4 text-muted">
         {t.home.about.body.map((paragraph) => <p>{paragraph}</p>)}
-      </div>
-    </section>
-
-    <section class="flex flex-col gap-6">
-      <div class="flex flex-col gap-2">
-        <h2 class="font-mono text-2xl font-semibold tracking-tight">
-          <span class="text-accent">~/</span>{t.home.skills.heading}
-        </h2>
-        <p class="prose-readable max-w-xl text-muted">{t.home.skills.lead}</p>
-      </div>
-      <div class="flex justify-center sm:justify-start">
-        <IconCloud client:visible images={skillIcons} />
       </div>
     </section>
 

@@ -25,17 +25,11 @@ export interface UIStrings {
   home: {
     hero: {
       promptWhoami: string;
-      promptPitch: string;
       promptContact: string;
-      pitch: string;
     };
     about: {
       heading: string;
       body: string[];
-    };
-    skills: {
-      heading: string;
-      lead: string;
     };
     featured: {
       heading: string;
@@ -90,8 +84,8 @@ export interface UIStrings {
 }
 
 const en: UIStrings = {
-  brand: "Luis Felipe",
-  role: "Full Stack / AI Engineer",
+  brand: "Luis Felipe Da Rocha",
+  role: "Full Stack Developer / AI Engineer",
   nav: {
     home: "home",
     projects: "projects",
@@ -104,10 +98,7 @@ const en: UIStrings = {
   home: {
     hero: {
       promptWhoami: "whoami",
-      promptPitch: "cat pitch.txt",
       promptContact: "./open-to-work --roles --projects",
-      pitch:
-        "I build production systems where the architecture decision is the business outcome — from a US studio's 3D-rendering pipeline to multi-tenant SaaS shipped to sell.",
     },
     about: {
       heading: "about",
@@ -115,10 +106,6 @@ const en: UIStrings = {
         "Full Stack / AI Engineer who builds production systems where the architecture decision is the business outcome. Promoted from Junior to Mid-Level in six months at Naranja Labs by owning end-to-end solutions for US-market clients — including the platform that runs a US studio's 3D-rendering pipeline from proposal through stage-based production to delivery and billing across 300+ projects.",
         "Independently architects complete multi-tenant SaaS products — from CRMs to real-time chat-as-a-service — built to sell, with billing, auth, and per-tenant data isolation. Pairs strong fundamentals (TDD, type-safe APIs, clean architecture) with a disciplined AI-augmented workflow that treats AI as an instrument under engineering control, not autopilot.",
       ],
-    },
-    skills: {
-      heading: "skills",
-      lead: "The stack I reach for across the stack — frontend, backend, data, infra, and AI. Drag the cloud to spin it.",
     },
     featured: {
       heading: "featured work",
