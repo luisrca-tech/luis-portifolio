@@ -127,7 +127,7 @@ async function processFile(filename) {
   }
 
   const imageRes = await fetchWithTimeout(imageUrl);
-  const buffer = Buffer.from(await imageRes.arrayBuffer());
+  const buffer = new Uint8Array(await imageRes.arrayBuffer());
   const slug = path.basename(filename, path.extname(filename));
   const ext = extensionFor(imageRes.headers.get("content-type"), imageUrl);
   const outName = `${slug}${ext}`;
