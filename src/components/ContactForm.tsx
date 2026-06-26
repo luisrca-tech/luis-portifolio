@@ -21,6 +21,9 @@ interface ContactFormStrings {
 
 interface ContactFormProps {
   strings: ContactFormStrings;
+  email: string;
+  copyLabel: string;
+  copiedLabel: string;
 }
 
 type Status = "idle" | "sending" | "success" | "error";
@@ -29,6 +32,9 @@ const inputClass =
   "w-full border border-border bg-surface px-3 py-2 font-mono text-sm text-fg " +
   "transition-colors placeholder:text-muted focus:border-accent focus:outline-none";
 const labelClass = "flex flex-col gap-1.5 font-mono text-sm text-muted";
+const copyButtonClass =
+  "border border-border px-3 py-1.5 font-mono text-sm text-muted transition-colors " +
+  "hover:border-accent hover:text-accent";
 
 /**
  * Contact form island. Posts JSON to the `/api/contact` serverless function,
@@ -39,10 +45,26 @@ const labelClass = "flex flex-col gap-1.5 font-mono text-sm text-muted";
  * Server-side validation is authoritative; the light client checks here just
  * give fast feedback and avoid empty round-trips.
  */
-export default function ContactForm({ strings }: ContactFormProps) {
+export default function ContactForm({
+  strings,
+  email,
+  copyLabel,
+  copiedLabel,
+}: ContactFormProps) {
   const [type, setType] = useState<InquiryType>("Role");
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string>("");
+  const [copied, setCopied] = useState(false);
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -180,13 +202,18 @@ export default function ContactForm({ strings }: ContactFormProps) {
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={status === "sending"}
-        className="self-start border border-accent px-4 py-2 font-mono text-sm text-accent transition-colors hover:bg-accent hover:text-base disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {status === "sending" ? strings.sending : `${strings.submit} →`}
-      </button>
+      <div className="flex flex-wrap items-center gap-2 self-start">
+        <button
+          type="submit"
+          disabled={status === "sending"}
+          className="border border-accent px-4 py-2 font-mono text-sm text-accent transition-colors hover:bg-accent hover:text-base disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {status === "sending" ? strings.sending : `${strings.submit} →`}
+        </button>
+        <button type="button" onClick={copyEmail} className={copyButtonClass}>
+          {copied ? `✓ ${copiedLabel}` : copyLabel}
+        </button>
+      </div>
     </form>
   );
 }

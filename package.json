@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "fetch-og": "node scripts/fetch-og.mjs",
+    "make-og": "node scripts/make-project-og.mjs",
     "astro": "astro"
   },
   "dependencies": {

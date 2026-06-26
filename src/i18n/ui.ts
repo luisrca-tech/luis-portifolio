@@ -30,6 +30,9 @@ export interface UIStrings {
     about: {
       heading: string;
       body: string[];
+      stats: { value: string; label: string }[];
+      status: string[];
+      badges: string[];
     };
     featured: {
       heading: string;
@@ -103,8 +106,23 @@ const en: UIStrings = {
     about: {
       heading: "about",
       body: [
-        "Full Stack / AI Engineer who builds production systems where the architecture decision is the business outcome. Promoted from Junior to Mid-Level in six months at Naranja Labs by owning end-to-end solutions for US-market clients — including the platform that runs a US studio's 3D-rendering pipeline from proposal through stage-based production to delivery and billing across 300+ projects.",
-        "Independently architects complete multi-tenant SaaS products — from CRMs to real-time chat-as-a-service — built to sell, with billing, auth, and per-tenant data isolation. Pairs strong fundamentals (TDD, type-safe APIs, clean architecture) with a disciplined AI-augmented workflow that treats AI as an instrument under engineering control, not autopilot.",
+        "Full Stack / AI Engineer who builds production systems where the architecture decision is the business outcome. At Naranja Labs I own end-to-end solutions for US-market clients — including the platform that runs a studio's 3D-rendering pipeline from proposal through stage-based production to delivery and billing, backed by a read-only audit harness that verifies every financial KPI against production data to the cent.",
+        "I led the evolution of a single-provider content tool into a multi-model RAG orchestrator routed across LLM providers behind decoupled microservices, and shipped the financial dashboard that became leadership's single source of truth. Independently, I architect complete multi-tenant SaaS products — from CRMs to real-time chat-as-a-service — built to sell, with billing, auth, and per-tenant data isolation.",
+        "I pair strong fundamentals (TDD, type-safe APIs, clean architecture) with a disciplined AI-augmented workflow — spec-driven development, agentic looping, and custom skills and sub-agents across Cursor and Claude Code — treating AI as an instrument under engineering control, not autopilot, and reviewing every output to keep changes in scope.",
+      ],
+      stats: [
+        { value: "~68%", label: "verified profit margin" },
+        { value: "66%", label: "lower AI latency & cost" },
+        { value: "300+", label: "projects in pipeline" },
+        { value: "6 mo", label: "Junior → Mid-Level" },
+      ],
+      status: ["open to work", "remote"],
+      badges: [
+        "RAG",
+        "Multi-LLM Orchestration",
+        "AI Agents",
+        "SaaS Architecture",
+        "TDD",
       ],
     },
     featured: {
