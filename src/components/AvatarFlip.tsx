@@ -20,7 +20,7 @@ export default function AvatarFlip({
   photoSrc,
   photoSrcSet,
   alt,
-  intervalMs = 5000,
+  intervalMs = 8000,
 }: Props) {
   const [flipped, setFlipped] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -78,7 +78,7 @@ export default function AvatarFlip({
         >
           {/* Front — photo (click to flip; avatar face stays drag-interactive) */}
           <div
-            className="absolute inset-0 cursor-pointer overflow-hidden"
+            className="group absolute inset-0 cursor-pointer overflow-hidden"
             style={{ backfaceVisibility: "hidden" }}
             onClick={() => setFlipped(true)}
           >
@@ -89,6 +89,25 @@ export default function AvatarFlip({
               alt={alt}
               className="size-full object-cover"
             />
+            {/* Affordance: makes it obvious the photo flips to the 3D bust. */}
+            <span className="pointer-events-none absolute right-2 bottom-2 flex items-center gap-1.5 border border-border bg-base/80 px-2 py-1 font-mono text-[10px] text-muted backdrop-blur-sm transition-colors group-hover:border-accent group-hover:text-accent">
+              <svg
+                viewBox="0 0 24 24"
+                className="size-3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 2v6h-6" />
+                <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+                <path d="M3 22v-6h6" />
+                <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+              </svg>
+              click to flip
+            </span>
           </div>
 
           {/* Back — interactive 3D bust (click to flip; drag still rotates) */}
@@ -105,15 +124,6 @@ export default function AvatarFlip({
         </div>
       </div>
 
-      <button
-        type="button"
-        onClick={() => setFlipped((f) => !f)}
-        className="mt-2 cursor-pointer font-mono text-xs text-muted transition-colors hover:text-accent"
-        aria-label={flipped ? "Show photo" : "Show 3D avatar"}
-      >
-        <span className="text-accent">$</span>{" "}
-        {flipped ? "./photo" : "./avatar --interactive"}
-      </button>
     </div>
   );
 }
