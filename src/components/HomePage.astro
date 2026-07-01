@@ -1,12 +1,14 @@
 ---
+import AvatarFlip from "./AvatarFlip.tsx";
 import HeroTerminal from "./HeroTerminal.tsx";
 import IconCloud from "./IconCloud.tsx";
 import ProjectCard from "./ProjectCard.astro";
 import ContactForm from "./ContactForm.tsx";
 import ContactChannels from "./ContactChannels.tsx";
-import Avatar3D from "./Avatar3D.tsx";
 import Mailbox3D from "./Mailbox3D.tsx";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { getImage } from "astro:assets";
+import luisPhoto from "../assets/luis-felipe.jpg";
 import { useStrings, type Locale } from "../i18n/ui";
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
@@ -20,6 +22,14 @@ const t = useStrings(locale);
 
 // Keep the in-page contact anchor on the current locale's home route.
 const contactHref = `${getRelativeLocaleUrl(locale, "")}#contact`;
+
+// Pre-optimize the portrait to responsive WebP so the flip island (a client
+// component that can't use Astro's <Image>) still gets a proper srcset.
+const photo = await getImage({
+  src: luisPhoto,
+  widths: [400, 512, 768, 1024],
+  format: "webp",
+});
 
 // Featured strip: explicit order for the home grid (2×2).
 const featuredSlugs = [
@@ -156,8 +166,13 @@ const skillIcons = [
         </div>
       </div>
 
-      <div class="flex justify-center md:justify-end">
-        <Avatar3D client:visible />
+      <div class="mx-auto w-full max-w-[32rem] md:mx-0 md:ml-auto">
+        <AvatarFlip
+          client:visible
+          photoSrc={photo.src}
+          photoSrcSet={photo.srcSet.attribute}
+          alt={`${t.brand} — ${t.role}`}
+        />
       </div>
     </section>
   </div>

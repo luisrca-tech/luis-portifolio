@@ -50,7 +50,14 @@ function Loader() {
   );
 }
 
-export default function Avatar3D() {
+/**
+ * `active` gates the auto-rotate/render loop from the outside. When the bust
+ * lives on the hidden back face of a flip card it is technically "in view"
+ * (only rotated away by CSS), so without this it would spin 360° and burn
+ * frames while invisible. Callers pass `active` true only once the face is
+ * actually shown.
+ */
+export default function Avatar3D({ active = true }: { active?: boolean }) {
   const [inView, setInView] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -78,7 +85,7 @@ export default function Avatar3D() {
     return () => observer.disconnect();
   }, []);
 
-  const autoRotate = inView && !reduceMotion;
+  const autoRotate = inView && active && !reduceMotion;
 
   return (
     <div
