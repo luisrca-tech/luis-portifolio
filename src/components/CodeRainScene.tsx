@@ -5,10 +5,17 @@ import { useEffect, useRef } from "react";
  * margins left and right of the centered `max-w-6xl` content column. It never
  * draws over the main column, so reading is untouched.
  *
- * Rendered on a plain 2D canvas (`ctx.fillText`) — no WebGL, no three.js. It is
- * dynamically imported by `CodeRain` only after that gate decides the device can
- * afford it and the viewport is wide enough to have real gutters, so it stays
- * off the first-load path entirely and pulls in no extra libraries.
+ * Rendered on a plain 2D canvas — no WebGL, no three.js. It is dynamically
+ * imported by `CodeRain` only after that gate decides the device can afford it
+ * and the viewport is wide enough to have real gutters, so it stays off the
+ * first-load path entirely and pulls in no extra libraries.
+ *
+ * Every glyph is baked once into an offscreen sprite atlas (one row per color)
+ * and the loop blits cells with `drawImage` instead of rasterizing text with
+ * `fillText` each frame — the same pixels for a fraction of the per-frame cost,
+ * since ~120-140 columns x 30 glyphs is thousands of draws per frame. The loop
+ * is also capped to ~60 FPS so high-refresh panels don't over-render a blurred
+ * background.
  *
  * Each gutter column is a falling drop: a white-hot head with an accent-tinted
  * tail that fades out. The fall reacts to scroll velocity, easing back to a slow
@@ -24,6 +31,7 @@ const GLYPHS = GLYPH_STR.split("");
 const COL_SPACING = 14; // horizontal gap between falling columns
 const ROW_SPACING = 22; // vertical gap between glyphs in a column
 const GLYPH_PX = 17; // rendered glyph size
+const CELL = Math.ceil(GLYPH_PX * 1.8); // square atlas cell that fully holds a bold glyph
 const TRAIL = 30; // glyphs per falling drop (head + fading tail)
 const CONTENT_MAX = 1152; // max-w-6xl — the centered column we must avoid
 const EDGE_GAP = 12; // breathing room from the content edge
@@ -68,6 +76,38 @@ export default function CodeRainScene() {
     // Idle drift is 1; scrolling pushes this up, every frame eases it back to 1.
     let speedMul = 1;
 
+    // Tail opacity by depth — independent of glyph or column, so bake it once.
+    const tailAlpha = Array.from(
+      { length: TRAIL },
+      (_, i) => Math.pow(1 - i / TRAIL, 1.4) * 0.9,
+    );
+
+    // Each glyph baked once per color into a sprite atlas: row 0 = accent tail,
+    // row 1 = white head. Built at device resolution so blits stay crisp under
+    // DPR. Rebuilt once the web font loads, since baking before then would lock
+    // in the monospace fallback.
+    const cell = Math.ceil(CELL * dpr);
+    const atlas = document.createElement("canvas");
+    atlas.width = cell * GLYPHS.length;
+    atlas.height = cell * 2;
+    const atlasCtx = atlas.getContext("2d");
+    const buildAtlas = () => {
+      if (!atlasCtx) return;
+      atlasCtx.clearRect(0, 0, atlas.width, atlas.height);
+      atlasCtx.font = `bold ${GLYPH_PX * dpr}px "JetBrains Mono", "Fira Code", monospace`;
+      atlasCtx.textAlign = "center";
+      atlasCtx.textBaseline = "middle";
+      const paintRow = (row: number, fill: string) => {
+        atlasCtx.fillStyle = fill;
+        for (let g = 0; g < GLYPHS.length; g++)
+          atlasCtx.fillText(GLYPHS[g], g * cell + cell / 2, row * cell + cell / 2);
+      };
+      paintRow(0, color);
+      paintRow(1, "#ffffff");
+    };
+    buildAtlas();
+    document.fonts?.ready.then(buildAtlas);
+
     // (Re)size the canvas and lay out the gutter columns for the viewport.
     const setup = () => {
       width = window.innerWidth;
@@ -77,9 +117,6 @@ export default function CodeRainScene() {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.font = `bold ${GLYPH_PX}px "JetBrains Mono", "Fira Code", monospace`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
       columns = gutterColumns(width).map((x) => ({
         x,
         headY: -Math.random() * height,
@@ -106,10 +143,18 @@ export default function CodeRainScene() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
+    // Cap rendering to ~60 FPS. Motion stays time-based off `dt`, so the fall
+    // speed is identical at any refresh rate — this only stops 120/144 Hz panels
+    // from drawing frames nobody can tell apart on a blurred background.
+    const FRAME_MS = 1000 / 60 - 2;
+
     let raf = 0;
     let last = performance.now();
     const frame = (now: number) => {
-      const dt = Math.min((now - last) / 1000, 0.05); // clamp big tab-switch deltas
+      raf = requestAnimationFrame(frame);
+      const elapsed = now - last;
+      if (elapsed < FRAME_MS) return;
+      const dt = Math.min(elapsed / 1000, 0.05); // clamp big tab-switch deltas
       last = now;
       speedMul += (1 - speedMul) * Math.min(1, dt * 2.5);
 
@@ -121,25 +166,25 @@ export default function CodeRainScene() {
           col.headY = -Math.random() * ROW_SPACING * TRAIL;
           col.speed = 5 + Math.random() * 7;
         }
+        const dx = Math.round(col.x - CELL / 2);
         for (let i = 0; i < TRAIL; i++) {
           const y = col.headY - i * ROW_SPACING;
           if (y < -ROW_SPACING || y > height + ROW_SPACING) continue;
           // Occasional flicker keeps the stream alive like terminal noise.
           if (Math.random() < 0.02)
             col.glyphs[i] = Math.floor(Math.random() * GLYPHS.length);
-          if (i === 0) {
-            // The leading glyph burns toward white for a hot head.
-            ctx.fillStyle = "#ffffff";
-            ctx.globalAlpha = 1;
-          } else {
-            ctx.fillStyle = color;
-            ctx.globalAlpha = Math.pow(1 - i / TRAIL, 1.4) * 0.9;
-          }
-          ctx.fillText(GLYPHS[col.glyphs[i]], col.x, y);
+          // Head burns white at full strength; tail uses the accent row, fading
+          // out with depth.
+          const row = i === 0 ? 1 : 0;
+          ctx.globalAlpha = i === 0 ? 1 : tailAlpha[i];
+          ctx.drawImage(
+            atlas,
+            col.glyphs[i] * cell, row * cell, cell, cell,
+            dx, Math.round(y - CELL / 2), CELL, CELL,
+          );
         }
       }
       ctx.globalAlpha = 1;
-      raf = requestAnimationFrame(frame);
     };
 
     // Pause the loop entirely while the tab is backgrounded — no point animating
