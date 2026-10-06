@@ -138,7 +138,7 @@ const en: UIStrings = {
     contact: {
       heading: "contact",
       lead: "Open to full-time, contract, and freelance work. Tell me about a role or a project below — or reach me directly through any channel.",
-      email: "luisrochacruzalves@gmail.com",
+      email: "luisrcadev@gmail.com",
       copyEmail: "Copy email",
       copied: "Copied!",
       form: {
@@ -246,7 +246,7 @@ const pt: UIStrings = {
     contact: {
       heading: "contato",
       lead: "Aberto a trabalho full-time, por contrato e freelance. Conte sobre uma vaga ou um projeto abaixo, ou fale comigo diretamente por qualquer canal.",
-      email: "luisrochacruzalves@gmail.com",
+      email: "luisrcadev@gmail.com",
       copyEmail: "Copiar e-mail",
       copied: "Copiado!",
       form: {
